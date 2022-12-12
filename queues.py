@@ -8,6 +8,7 @@ class PriorityQueue:
         self._elements = [] #self parameter used to access variables of the class; the underscore on the elements means internal bit of implementation which means it cannot be accessed outside the class/modify
 
     def enqueue_with_priority(self, priority, value):
+        #Notice that the priority comes before the value to take advantage of how Python compares tuples
         heappush(self._elements, (priority, value)) #somehow works like .append()
         #the first element on a heap always has the smallest (min-heap) or the highest (max-heap) value, depending on how you define the condition for the mentioned relationship
         #lower Unicode means the element is smaller
