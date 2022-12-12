@@ -1,3 +1,5 @@
+"""New file where I build the logic progress on the final program"""
+
 """Since from the latest progress on Priority Queue, there are stil flaws: when hearsay it violates sort stability when there are elements with equal priorities---where 
 they were compared by value (in this case a String) according to lexicographic order. They should be compared by insertion"""
 

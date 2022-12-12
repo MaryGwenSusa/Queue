@@ -1,4 +1,6 @@
 from collections import deque
+#lexicographic order - the alphabetical order of the dictionaries to sequences of ordered symbols or, more generally, of elements of a totally ordered set
+from dataclasses import dataclass 
 from heapq import heappush, heappop
 #from queues import PriorityQueue
 #heap compares elements by value not by priority so Python’s tuple can be used for comparison which takes into account the tuple’s components
@@ -29,22 +31,24 @@ messages.enqueue_with_priority(NEUTRAL, "Radio station tuned in")
 messages.enqueue_with_priority(CRITICAL, "Brake pedal depressed")
 messages.enqueue_with_priority(IMPORTANT, "Hazard lights turned on")
 
-print(messages.dequeue())
-print(messages.dequeue())
-print(messages.dequeue())
-print(messages.dequeue())
+#print(messages.dequeue())
+#print(messages.dequeue())
+#print(messages.dequeue())
+#print(messages.dequeue())
+
+
+""""Still error, since the comparison moved onto the value which are not yet defined for the custom Message class"""
+@dataclass #used to represent messages in the queue; more convenient than strings but aren't comparable
+class Message:
+    event: str
+
+wipers = Message("Windshield wipers turned on")
+hazard_lights = Message("Hazard lights turned on")
+
+messages.enqueue_with_priority(CRITICAL, Message("ABS engaged"))
 
 
 
-#heap compares elements by value not by priority so Python’s tuple can be used for comparison which takes into account the tuple’s components
-#fruits = []
-#heappush(fruits, "orange") 
-#heappush(fruits, "apple")
-#heappush(fruits, "banana")
-
-#print(fruits)
-#lower Unicode means the element is smaller
-#print(heappop(fruits))
 
 #Notice how the banana and orange swapped places to ensure the first element continues to be the smallest
 #print(fruits)
