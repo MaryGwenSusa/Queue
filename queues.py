@@ -22,6 +22,26 @@ class IterableMixin:
         while len(self) > 0:
             yield self.dequeue() #yield is similar to return statement but returns a generator object the one that calls the function
 
+class Queue(IterableMixin): #object constructor
+    """this class is a simple structure of a FIFO queue wherein you add another element to the last index then gets the first element from the left side 
+    or the one with zero index"""
+    def __init__(self, *elements):
+        """here inputting initial elements is allowed"""
+        self._elements = deque(elements)
+
+    def enqueue(self, element):
+        self._elements.append(element)
+
+    def dequeue(self):
+        return self._elements.popleft()
+        
+class Stack(Queue):
+    """this program is a simple structure of a LIFO queue hwerein you add naother element to the last index then gets the last element you add first"""
+    def dequeue(self):
+        # this was for the FIFO -- return self._elements.popleft() #gets the first element from the left since this is portrayed in a horizontal manner but still preserves 
+        # the general idea of a stack
+        return self._elements.pop() #gets the last element
+
 class PriorityQueue(IterableMixin):
     def __init__(self): #__init__ is automatically used when creating a class
         self._elements = [] #self parameter used to access variables of the class; the underscore on the elements means internal bit of implementation which means it cannot be accessed outside the class/modify
