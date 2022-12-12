@@ -26,8 +26,9 @@ class PriorityQueue:
         #lower Unicode means the element is smaller
     
     def dequeue(self):
-        return heappop(self._elements)[1] #When you pop an element from a heap, you’ll always get the first one, while the remaining elements might shuffle a little bit
-        #since there are two parameters--when performing a dequeue operation, you’ll unpack the value from the tuple by accessing its second component, located at index one using the square bracket ([]) syntax 
+        return heappop(self._elements)[-1] #When you pop an element from a heap, you’ll always get the first one, while the remaining elements might shuffle a little bit
+        #since there are three components inside the tuple--when performing a dequeue operation, you’ll unpack the value from the tuple by accessing its third component, 
+        # located at index two. it would be safer to use the -1 to indicate the last component regardless of the number of components in the tuple--using the square bracket ([]) syntax 
         
 messages = PriorityQueue() #called the class
 messages.enqueue_with_priority(IMPORTANT, "Windshield wipers turned on") #syntax to calling functions and adding value/argument to the parameter
