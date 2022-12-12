@@ -1,7 +1,12 @@
 from collections import deque
 from heapq import heappush, heappop
+from queues import PriorityQueue
 #heap compares elements by value not by priority so Python’s tuple can be used for comparison which takes into account the tuple’s components
 
+#variables with value as argument for priority parameter
+CRITICAL = 3
+IMPORTANT = 2
+NEUTRAL = 1
 
 class PriorityQueue:
     def __init__(self): #__init__ is automatically used when creating a class
@@ -16,11 +21,13 @@ class PriorityQueue:
     def dequeue(self):
         return heappop(self._elements) #When you pop an element from a heap, you’ll always get the first one, while the remaining elements might shuffle a little bit
 
+messages = PriorityQueue()
+messages.enqueue_with_priority(IMPORTANT, "Windshield wipers turned on")
+messages.enqueue_with_priority(NEUTRAL, "Radio station tuned in")
+messages.enqueue_with_priority(CRITICAL, "Brake pedal depressed")
+messages.enqueue_with_priority(IMPORTANT, "Hazard lights turned on")
 
-
-
-
-
+print(messages.dequeue())
 
 
 #heap compares elements by value not by priority so Python’s tuple can be used for comparison which takes into account the tuple’s components
