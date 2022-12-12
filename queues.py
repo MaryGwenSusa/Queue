@@ -14,4 +14,6 @@ class Queue: #object constructor
         return self._elements.popleft()#gets the first element from the left since this is portrayed in a horizontal manner but still preserves the general idea of a stack
 
 fifo = Queue()
-        
+fifo.enqueue("1st")
+fifo.enqueue("2nd")
+fifo.enqueue("3rd")
