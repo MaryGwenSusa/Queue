@@ -13,4 +13,5 @@ class Queue: #object constructor
     def dequeue(self):
         return self._elements.popleft()#gets the first element from the left since this is portrayed in a horizontal manner but still preserves the general idea of a stack
 
+fifo = Queue()
         
