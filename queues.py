@@ -14,7 +14,7 @@ print(heappop(fruits))
 #Notice how the banana and orange swapped places to ensure the first element continues to be the smallest
 print(fruits)
 
-person1 = ("John", "Doe", 42)
+person1 = ("John", "Brown", 42)
 person2 = ("John", "Doe", 42)
 person3 = ("John", "Doe", 24)
 
