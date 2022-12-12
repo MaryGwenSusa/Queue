@@ -26,5 +26,12 @@ fifo = Queue("1st", "2nd", "3rd") #added arguments to the class itself then tran
 
 #syntax to calling functions and adding value/argument to the parameter
 
-len(fifo)
+print(len(fifo))
+print(fifo.__len__()) #another syntax to call the __len__ function inside the class and print its processed data
+
+for element in fifo: #print in loop each element of the stack
+    print(element)
+
+
+print(len(fifo)) #since there's a function that automatically dequeues the elements, here is a proof of that
 
