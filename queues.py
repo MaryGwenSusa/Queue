@@ -12,7 +12,17 @@ CRITICAL = 3
 IMPORTANT = 2
 NEUTRAL = 1
 
-class PriorityQueue:
+class IterableMixin:
+    def __len__(self): # this reports the stack's number of elements
+        """defining __len__ will make len() work since it calls upon __len__"""
+        return len(self._elements)
+    
+    def __iter__(self): ##this will make class instances usable/iterable through looping
+        """"when iterating this will automatically dequeue elements"""
+        while len(self) > 0:
+            yield self.dequeue() #yield is similar to return statement but returns a generator object the one that calls the function
+
+class PriorityQueue(IterableMixin):
     def __init__(self): #__init__ is automatically used when creating a class
         self._elements = [] #self parameter used to access variables of the class; the underscore on the elements means internal bit of implementation which means it cannot be accessed outside the class/modify
         self._counter = count() #generates consecutive data points usually used in maps
@@ -42,7 +52,6 @@ messages.enqueue_with_priority(IMPORTANT, "Hazard lights turned on")
 #print(messages.dequeue())
 
 
-""""Still error, since the comparison moved onto the value which are not yet defined for the custom Message class"""
 @dataclass #used to represent messages in the queue; more convenient than strings but aren't comparable
 class Message:
     event: str
