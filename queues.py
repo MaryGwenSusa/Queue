@@ -26,5 +26,5 @@ fifo = Queue("1st", "2nd", "3rd") #added arguments to the class itself then tran
 
 #syntax to calling functions and adding value/argument to the parameter
 
-len
+len(fifo)
 
