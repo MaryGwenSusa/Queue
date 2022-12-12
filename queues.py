@@ -2,7 +2,7 @@ from collections import deque
 from heapq import heappush, heappop
 #from queues import PriorityQueue
 #heap compares elements by value not by priority so Python’s tuple can be used for comparison which takes into account the tuple’s components
-
+"""This current program actually just has a problem with numerical value and turns out there are a lot of ways to fix this"""
 #variables with value as argument for priority parameter
 CRITICAL = 3
 IMPORTANT = 2
@@ -14,13 +14,15 @@ class PriorityQueue:
 
     def enqueue_with_priority(self, priority, value):
         #Notice that the priority comes before the value to take advantage of how Python compares tuples
-        heappush(self._elements, (priority, value)) #somehow works like .append()
+        heappush(self._elements, (-priority, value)) #somehow works like .append()
         #the first element on a heap always has the smallest (min-heap) or the highest (max-heap) value, depending on how you define the condition for the mentioned relationship
+        #to fix that a negative sign is planted onto the priority variable so the highest value becomes the lowest
         #lower Unicode means the element is smaller
     
     def dequeue(self):
-        return heappop(self._elements) #When you pop an element from a heap, you’ll always get the first one, while the remaining elements might shuffle a little bit
-
+        return heappop(self._elements)[1] #When you pop an element from a heap, you’ll always get the first one, while the remaining elements might shuffle a little bit
+        #since there are two parameters--when performing a dequeue operation, you’ll unpack the value from the tuple by accessing its second component, located at index one using the square bracket ([]) syntax 
+        
 messages = PriorityQueue() #called the class
 messages.enqueue_with_priority(IMPORTANT, "Windshield wipers turned on") #syntax to calling functions and adding value/argument to the parameter
 messages.enqueue_with_priority(NEUTRAL, "Radio station tuned in")
@@ -28,6 +30,10 @@ messages.enqueue_with_priority(CRITICAL, "Brake pedal depressed")
 messages.enqueue_with_priority(IMPORTANT, "Hazard lights turned on")
 
 print(messages.dequeue())
+print(messages.dequeue())
+print(messages.dequeue())
+print(messages.dequeue())
+
 
 
 #heap compares elements by value not by priority so Python’s tuple can be used for comparison which takes into account the tuple’s components
