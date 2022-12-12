@@ -12,7 +12,9 @@ CRITICAL = 3
 IMPORTANT = 2
 NEUTRAL = 1
 
-class IterableMixin:
+class IterableMixin: #inclusion of a mixin class rather than pure inheritance
+    #mixins are great for encapsulating behavior rather than state
+    #by composing a class with one or more mixins, you can change or augment its original behavior.
     def __len__(self): # this reports the stack's number of elements
         """defining __len__ will make len() work since it calls upon __len__"""
         return len(self._elements)
@@ -81,8 +83,3 @@ hazard_lights = Message("Hazard lights turned on")
 
 messages.enqueue_with_priority(CRITICAL, Message("ABS engaged"))
 
-
-
-
-#Notice how the banana and orange swapped places to ensure the first element continues to be the smallest
-#print(fruits)
