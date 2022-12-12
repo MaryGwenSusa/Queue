@@ -1,4 +1,5 @@
 from collections import deque
+from itertools import count
 #lexicographic order - the alphabetical order of the dictionaries to sequences of ordered symbols or, more generally, of elements of a totally ordered set
 from dataclasses import dataclass 
 from heapq import heappush, heappop
@@ -13,6 +14,7 @@ NEUTRAL = 1
 class PriorityQueue:
     def __init__(self): #__init__ is automatically used when creating a class
         self._elements = [] #self parameter used to access variables of the class; the underscore on the elements means internal bit of implementation which means it cannot be accessed outside the class/modify
+        self._counter = count() #generates consecutive data points usually used in maps
 
     def enqueue_with_priority(self, priority, value):
         #Notice that the priority comes before the value to take advantage of how Python compares tuples
