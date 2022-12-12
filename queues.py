@@ -4,11 +4,17 @@ from collections import deque
 #or the one with zero index
 class Queue: #object constructor
     #class is very useful to somehow make a local variable accessible to every defined functions
-    def __init__(self, *elements): #__init__ is automatically used when creating a class; the asterisk beside the elemts represents a keyword only parameter tho not entirely sure
+    def __init__(self, *elements): #__init__ is automatically used when creating a class; the asterisk beside the elements parameter allows you to provide varying number of positional arguments
         self._elements = deque(elements) #self parameter used to access variables of the class
     
     def __len__(self): # this reports the stack's number of elements
+        """defining __len__ will make len() work since it calls upon __len__"""
         return len(self._elements)
+
+    def __iter__(self): #this will make class instances usable/iterable through looping
+        """"when iterating this will automatically dequeue elements"""
+        while len(self) > 0:
+            yield self.dequeue() #yield is similar to return statement but returns a generator object the one that calls the function
 
     def enqueue(self, element):
         self._elements.append(element) #the underscore on the elements means internal bit of implementation which means it cannot be accessed outside the class/modify
