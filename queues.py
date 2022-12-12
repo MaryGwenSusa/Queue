@@ -22,7 +22,9 @@ class Queue: #object constructor
     def dequeue(self):
         return self._elements.popleft()#gets the first element from the left since this is portrayed in a horizontal manner but still preserves the general idea of a stack
 
-fifo = Queue()
-fifo.enqueue("1st") #syntax to calling functions and adding value/argument to the parameter
-fifo.enqueue("2nd")
-fifo.enqueue("3rd")
+fifo = Queue("1st", "2nd", "3rd") #added arguments to the class itself then transfers to the defined functions' parameter inside
+
+#syntax to calling functions and adding value/argument to the parameter
+
+len
+
