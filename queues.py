@@ -1,4 +1,5 @@
 from collections import deque
+#counts from zero to infinity concisely
 from itertools import count
 #lexicographic order - the alphabetical order of the dictionaries to sequences of ordered symbols or, more generally, of elements of a totally ordered set
 from dataclasses import dataclass 
@@ -17,8 +18,9 @@ class PriorityQueue:
         self._counter = count() #generates consecutive data points usually used in maps
 
     def enqueue_with_priority(self, priority, value):
+        element = (-priority, next(self._counter), value) #next() function returns the next item in an iterator.
         #Notice that the priority comes before the value to take advantage of how Python compares tuples
-        heappush(self._elements, (-priority, value)) #somehow works like .append()
+        heappush(self._elements, (element)) #somehow works like .append()
         #the first element on a heap always has the smallest (min-heap) or the highest (max-heap) value, depending on how you define the condition for the mentioned relationship
         #to fix that a negative sign is planted onto the priority variable so the highest value becomes the lowest
         #lower Unicode means the element is smaller
