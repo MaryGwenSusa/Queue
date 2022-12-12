@@ -8,3 +8,7 @@ class Queue: #object constructor
     def enqueue(self, element):
         self._elements.append(element)
     
+    def dequeue(self):
+        return self._element.popleft()#gets the first element from the left since this is portrayed in a horizontal manner but still preserves the general idea of a stack
+
+        
