@@ -41,5 +41,5 @@ city2 = nodes["perth"]
 
 
 """when visiting a code, this will keep track of the previous node that led you to it by saving this information as a key-value pair in a dictionary"""
-for i, path in enumerate(nx.all_shortest_paths(graph, city1, city2), 1):
-    print(f"{i}.", " → ".join(city.name for city in path))
+for i, path in enumerate(nx.all_shortest_paths(graph, city1, city2), 1): #enumerate function takes a collectiona and returns objects
+    print(f"{i}.", " → ".join(city.name for city in path)) #.join function takes all items in an iterable and joins them into one string

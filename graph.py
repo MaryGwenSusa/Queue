@@ -51,10 +51,11 @@ for neighbor, weights in sort_by(graph[nodes["london"]], by_distance):
     # and reveal it numerically which is needed as a basis for the best path
     print(f"{weights['distance']:>3} miles, {neighbor.name}")
 
-def breadth_first_traverse(graph, source):
+def shortest_path(graph, source, destination, order_by=None):
     """Uses FIFO queue to keep track of the node neighbors"""
     queue = Queue(source)
     visited = {source}
+    previous = {}
     #for node in queue:
     #   yield node
     """"the for loop can be used since there is a custom queue structure before that is iterable by dequeueing elements but it relies on a non-obvious implementation detail 
@@ -62,15 +63,11 @@ def breadth_first_traverse(graph, source):
     while queue:
         #yield is similar to return statement but returns a generator object the one that calls the function
         yield (node := queue.dequeue()) #syntax := or walrus opearator assigns values to variables as part of a larger expression
-        for neighbor in graph.neighbors(node):
+        neighbors = list(graph.neighbors(node))
+        if order_by:
+            neighbors.sort(key=order_by)
+        for neighbor in neighbors:
             if neighbor not in visited: #if statement to mark visited nodes by adding them to a Python set, so that each neighbor is visited at most once
                 visited.add(neighbor)
                 queue.enqueue(neighbor)
 
-def breadth_first_search(graph, source, predicate):
-    """"This builds on top breadth_first_traverse by looping over the yielded nodes (using for loop), and stops once the current node meets the expected criteria (thru if 
-    statement); then, returns it"""
-    for node in breadth_first_traverse(graph, source):
-        if predicate(node):
-            return node
-    
