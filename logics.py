@@ -46,5 +46,9 @@ def load_graph(filename, node_factory): #callable factory for the node objects l
     )
 
 def is_twentieth_century(year):
-    """defined a function that returns boolean conditions of the target year"""
+    """defined a function that returns only qualified node from the boolean conditions of the target year"""
     return year and 1901 <= year <= 2000
+
+nodes, graph = load_graph("roadmap.dot", City.from_dict) #called the function with value arguments then stored in variables
+for node in nx.bfs_tree(graph, nodes["edinburgh"]): #breadth-first search algorithm looks for a node that satisfies a particular condition by exploring the graph in concentric layers or levels
+    print("📍", node.name)
