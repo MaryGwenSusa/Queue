@@ -66,4 +66,11 @@ def breadth_first_traverse(graph, source):
             if neighbor not in visited: #if statement to mark visited nodes by adding them to a Python set, so that each neighbor is visited at most once
                 visited.add(neighbor)
                 queue.enqueue(neighbor)
+
+def breadth_first_search(graph, source, predicate):
+    """"This builds on top breadth_first_traverse by looping over the yielded nodes (using for loop), and stops once the current node meets the expected criteria (thru if 
+    statement); then, returns it"""
+    for node in breadth_first_traverse(graph, source):
+        if predicate(node):
+            return node
     
