@@ -66,10 +66,10 @@ def breadth_first_traverse(graph, source, order_by=None):
                 visited.add(neighbor)
                 queue.enqueue(neighbor)
 
-def breadth_first_search(graph, source, predicate):
+def breadth_first_search(graph, source, predicate, order_by=None):
     """"This builds on top breadth_first_traverse by looping over the yielded nodes (using for loop), and stops once the current node meets the expected criteria (thru if 
     statement); then, returns it"""
-    for node in breadth_first_traverse(graph, source):
+    for node in breadth_first_traverse(graph, source, order_by):
         if predicate(node):
             return node
     
