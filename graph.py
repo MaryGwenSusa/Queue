@@ -136,6 +136,13 @@ def depth_first_traverse(graph, source, order_by=None):
                 """
                 stack.enqueue(neighbor)
 
+# call stack saved for backtracking and rewritten the function recursively
 def recursive_depth_first_traverse(graph, source, order_by=None):
     visited = set()
 
+    def visit(node):
+        yield node
+        visited.add(node)
+        neighbors = list(graph.neighbors(node))
+        if order_by:
+            neighbors.sort(key=order_by)
