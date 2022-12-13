@@ -34,7 +34,9 @@ def load_graph(filename, node_factory): #callable factory for the node objects l
 
 nodes, graph = load_graph("roadmap.dot", City.from_dict) #called the function with value arguments then stored in variables
 
-print(nodes["london"])
+"""identify the immediate neighbors in the purpose of looking for the shoertest path/finding available routes"""
+for neighbor in graph.neighbors(nodes["london"]):
+    print(neighbor.name)
 
-print(graph)
+
     
