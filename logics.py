@@ -99,8 +99,8 @@ nodes, graph = load_graph("roadmap.dot", City.from_dict) #called the function wi
 #print(city.name)
 
 
-for city in breadth_first_traverse(graph, nodes["edinburgh"]):
-    print(city.name)
+#for city in breadth_first_traverse(graph, nodes["edinburgh"]):
+    #print(city.name)
 
 #works exactly like this in the first attempt with netwrokx but the former fits perfectly with the current dataset:
 #for neighbor in graph.neighbors(nodes["london"]):
