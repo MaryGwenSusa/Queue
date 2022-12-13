@@ -91,7 +91,9 @@ nodes, graph = load_graph("roadmap.dot", City.from_dict) #called the function wi
 #else:
     #print("Not found")
 
-city = breadth_first_search(graph, nodes["edinburgh"], is_twentieth_century)
-print(city.name)
+#city = breadth_first_search(graph, nodes["edinburgh"], is_twentieth_century)
+#print(city.name)
 
+for city in breadth_first_traverse(graph, nodes["edinburgh"]):
+    print(city.name)
     
