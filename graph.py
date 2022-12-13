@@ -25,4 +25,9 @@ def load_graph(filename, node_factory): #callable factory for the node objects l
         name: node_factory(attributes)
         for name, attributes in graph.nodes(data=True)
     }
+    #returns the mapping and a new graph comprising nodes and weighted edges
+    return nodes, nx.Graph(
+        (nodes[name1], nodes[name2], weights)
+        for name1, name2, weights in graph.edges(data=True)
+    )
     
