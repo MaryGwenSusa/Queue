@@ -1,4 +1,5 @@
 from typing import NamedTuple
+from queues import Queue
 import networkx as nx
 
 class City(NamedTuple): #extend a named tuple to ensure that your node objects are hashable, which is required by networkx; could also use a properly configured data class
@@ -50,5 +51,15 @@ for neighbor, weights in sort_by(graph[nodes["london"]], by_distance):
     # and reveal it numerically which is needed as a basis for the best path
     print(f"{weights['distance']:>3} miles, {neighbor.name}")
 
-
+def breadth_first_traverse(graph, source):
+    """Uses FIFO queue to keep track of the node neighbors"""
+    queue = Queue(source)
+    visited = {source}
+    while queue:
+        #yield is similar to return statement but returns a generator object the one that calls the function
+        yield (node := queue.dequeue()) #syntax := or walrus opearator assigns values to variables as part of a larger expression
+        for neighbor in graph.neighbors(node):
+            if neighbor not in visited: #if statement to mark visited nodes by adding them to a Python set, so that each neighbor is visited at most once
+                visited.add(neighbor)
+                queue.enqueue(neighbor)
     

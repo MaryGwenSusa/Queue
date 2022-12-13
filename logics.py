@@ -50,6 +50,7 @@ def is_twentieth_century(year):
     return year and 1901 <= year <= 2000
 
 def order(neighbors):
+    """order() wraps a list of sorted neighbors in a call to iter(). it’s because nx.bfs_tree() expects an iterator object as input for its sort_neighbors argument"""
     def by_latitude(city):
         return city.latitude
     return iter(sorted(neighbors, key=by_latitude, reverse=True)) #iterates the sorted neighbors of a certain node according to their latitude
