@@ -79,6 +79,10 @@ def retrace(previous, source, destination):
 def by_latitude(city):
     return -city.latitude #to enforce a descending order, the minus sign (-) is added in front of the .latitude attribute
 
+def connected(graph, source, destination):
+    """this will tell if certain cities may be connected or not: case in point, islands"""
+    return shortest_path(graph, source, destination) is not None
+
 nodes, graph = load_graph("roadmap.dot", City.from_dict) #called the function with value arguments then stored in variables
 
 city1 = nodes["aberdeen"]
