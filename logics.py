@@ -52,3 +52,9 @@ def is_twentieth_century(year):
 nodes, graph = load_graph("roadmap.dot", City.from_dict) #called the function with value arguments then stored in variables
 for node in nx.bfs_tree(graph, nodes["edinburgh"]): #breadth-first search algorithm looks for a node that satisfies a particular condition by exploring the graph in concentric layers or levels
     print("📍", node.name)
+    if is_twentieth_century(node.year):
+        print("Found:", node.name, node.year)
+        break
+
+else:
+    print("Not found")
