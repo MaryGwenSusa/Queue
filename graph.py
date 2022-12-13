@@ -1,6 +1,7 @@
 from typing import NamedTuple
 from queues import Queue
 import networkx as nx
+from collections import deque
 
 class City(NamedTuple): #extend a named tuple to ensure that your node objects are hashable, which is required by networkx; could also use a properly configured data class
     name: str
@@ -72,6 +73,11 @@ def shortest_path(graph, source, destination, order_by=None):
             if neighbor not in visited: #if statement to mark visited nodes by adding them to a Python set, so that each neighbor is visited at most once
                 visited.add(neighbor)
                 queue.enqueue(neighbor)
-                previous[neighbor] = node #populates dict of visited neighbors by associating it previous nodes on the path
+                previous[neighbor] = node #populates dict of visited neighbors by associating it with previous nodes on the path
+                if neighbor == destination:
+                    return retrace(previous, source, destination)
+
+def retrace(previous, source, destination):
+    path = deque() #called a double-ended queue
             
 
