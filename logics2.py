@@ -100,3 +100,8 @@ this follows natural order of neighbors from the DOT file"""
 
 """prefers neighbors with a higher latitude, which you specify through a custom sort strategy"""
 print(" → ".join(city.name for city in shortest_path(graph, city1, city2, by_latitude)))
+
+if connected(graph, nodes["belfast"], nodes["derry"]):
+    print(True)
+else:
+    print(False)
