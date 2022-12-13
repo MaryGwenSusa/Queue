@@ -55,6 +55,10 @@ def breadth_first_traverse(graph, source):
     """Uses FIFO queue to keep track of the node neighbors"""
     queue = Queue(source)
     visited = {source}
+    #for node in queue:
+    #   yield node
+    """"the for loop can be used since there is a custom queue structure before that is iterable by dequeueing elements but it relies on a non-obvious implementation detail 
+    in the Queue class--making the while loop with walrus operator to yield a dequeued node is more conventional"""
     while queue:
         #yield is similar to return statement but returns a generator object the one that calls the function
         yield (node := queue.dequeue()) #syntax := or walrus opearator assigns values to variables as part of a larger expression
