@@ -58,9 +58,9 @@ def breadth_first_traverse(graph, source, order_by=None):
     while queue:
         #yield is similar to return statement but returns a generator object the one that calls the function
         yield (node := queue.dequeue()) #syntax := or walrus opearator assigns values to variables as part of a larger expression
-        neighbors = list(graph.dequeue())
+        neighbors = list(graph.neighbors(node))
         if order_by:
-            neighbor.sort(key=order_by)
+            neighbors.sort(key=order_by)
         for neighbor in neighbors:
             if neighbor not in visited: #if statement to mark visited nodes by adding them to a Python set, so that each neighbor is visited at most once
                 visited.add(neighbor)
