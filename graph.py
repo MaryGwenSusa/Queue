@@ -149,3 +149,5 @@ def recursive_depth_first_traverse(graph, source, order_by=None):
         for neighbor in neighbors: #no need to reverse the neighbors when iterating over them
             if neighbor not in visited:
                 yield from visit(neighbor) #doesn't push already visited neighbors onto the stack
+
+    return visit(source) #pops one when the corresponding function returns
