@@ -77,7 +77,7 @@ def retrace(previous, source, destination):
     return list(path)
 
 def by_latitude(city):
-    return -city.latitude
+    return -city.latitude #to enforce a descending order, the minus sign (-) is added in front of the .latitude attribute
 
 nodes, graph = load_graph("roadmap.dot", City.from_dict) #called the function with value arguments then stored in variables
 
@@ -93,3 +93,6 @@ city2 = nodes["perth"]
 
 this follows natural order of neighbors from the DOT file"""
 #print(" → ".join(city.name for city in shortest_path(graph, city1, city2)))
+
+"""prefers neighbors with a higher latitude, which you specify through a custom sort strategy"""
+print(" → ".join(city.name for city in shortest_path(graph, city1, city2, by_latitude)))
