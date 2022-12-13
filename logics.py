@@ -12,6 +12,7 @@
 # 'year': 0} #corresponds to when a city got its status; when 0 = time immemorial
 
 from typing import NamedTuple
+from queues import Queue
 import networkx as nx
 
 class City(NamedTuple): #extend a named tuple to ensure that your node objects are hashable, which is required by networkx; could also use a properly configured data class
@@ -45,11 +46,35 @@ def load_graph(filename, node_factory): #callable factory for the node objects l
         for name1, name2, weights in graph.edges(data=True)
     )
 
+def breadth_first_traverse(graph, source):
+    """Uses FIFO queue to keep track of the node neighbors"""
+    queue = Queue(source)
+    visited = {source}
+    #for node in queue:
+    #   yield node
+    """"the for loop can be used since there is a custom queue structure before that is iterable by dequeueing elements but it relies on a non-obvious implementation detail 
+    in the Queue class--making the while loop with walrus operator to yield a dequeued node is more conventional"""
+    while queue:
+        #yield is similar to return statement but returns a generator object the one that calls the function
+        yield (node := queue.dequeue()) #syntax := or walrus opearator assigns values to variables as part of a larger expression
+        for neighbor in graph.neighbors(node):
+            if neighbor not in visited: #if statement to mark visited nodes by adding them to a Python set, so that each neighbor is visited at most once
+                visited.add(neighbor)
+                queue.enqueue(neighbor)
+
+def breadth_first_search(graph, source, predicate):
+    """"This builds on top breadth_first_traverse by looping over the yielded nodes (using for loop), and stops once the current node meets the expected criteria (thru if 
+    statement); then, returns it"""
+    for node in breadth_first_traverse(graph, source):
+        if predicate(node):
+            return node
+    
+
 def is_twentieth_century(year):
     """defined a function that returns only qualified node from the boolean conditions of the target year"""
     return year and 1901 <= year <= 2000
 
-def order(neighbors):
+#def order(neighbors):
     """order() wraps a list of sorted neighbors in a call to iter(). it’s because nx.bfs_tree() expects an iterator object as input for its sort_neighbors argument"""
     def by_latitude(city):
         return city.latitude
@@ -57,11 +82,13 @@ def order(neighbors):
     # iter () converts an iterable to the iterator
 
 nodes, graph = load_graph("roadmap.dot", City.from_dict) #called the function with value arguments then stored in variables
-for node in nx.bfs_tree(graph, nodes["edinburgh"], sort_neighbors=order): #breadth-first search algorithm looks for a node that satisfies a particular condition by exploring the graph in concentric layers or levels
-    print("📍", node.name)
-    if is_twentieth_century(node.year):
-        print("Found:", node.name, node.year)
-        break
+#for node in nx.bfs_tree(graph, nodes["edinburgh"], sort_neighbors=order): #breadth-first search algorithm looks for a node that satisfies a particular condition by exploring the graph in concentric layers or levels
+    #print("📍", node.name)
+    #if is_twentieth_century(node.year):
+        #print("Found:", node.name, node.year)
+        #break
 
-else:
-    print("Not found")
+#else:
+    #print("Not found")
+
+    
