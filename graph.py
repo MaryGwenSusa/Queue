@@ -78,6 +78,20 @@ def shortest_path(graph, source, destination, order_by=None):
                     return retrace(previous, source, destination)
 
 def retrace(previous, source, destination):
+    """iteratively looks up the dictionary built earlier when traversing the graph with the breadth-first approach"""
     path = deque() #called a double-ended queue
+
+    current = destination
+    """At each iteration, you add the current node to the path and move to the previous node. It will loop until the source is reached or in other case, 
+    there isn't a source"""
+    while current != source:
+        path.appendleft(current)
+        current = previous.get(current)
+        if current is None:
+            return None
+    
+    path.appendleft(source)
+    return list(path)
+
             
 
