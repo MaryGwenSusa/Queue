@@ -46,6 +46,7 @@ def load_graph(filename, node_factory): #callable factory for the node objects l
         for name1, name2, weights in graph.edges(data=True)
     )
 
+"""However, a flaw is found that the functions dont't allow sorting the neighbors in a particular order"""
 def breadth_first_traverse(graph, source, order_by=None):
     """Uses FIFO queue to keep track of the node neighbors"""
     queue = Queue(source)
@@ -57,12 +58,12 @@ def breadth_first_traverse(graph, source, order_by=None):
     while queue:
         #yield is similar to return statement but returns a generator object the one that calls the function
         yield (node := queue.dequeue()) #syntax := or walrus opearator assigns values to variables as part of a larger expression
+        neighbors = list(graph.dequeue())
         for neighbor in graph.neighbors(node):
             if neighbor not in visited: #if statement to mark visited nodes by adding them to a Python set, so that each neighbor is visited at most once
                 visited.add(neighbor)
                 queue.enqueue(neighbor)
 
-"""However, a flaw is found that the functions dont't allow sorting the neighbors in a particular order"""
 def breadth_first_search(graph, source, predicate):
     """"This builds on top breadth_first_traverse by looping over the yielded nodes (using for loop), and stops once the current node meets the expected criteria (thru if 
     statement); then, returns it"""
