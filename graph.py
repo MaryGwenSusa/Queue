@@ -1,5 +1,6 @@
 from typing import NamedTuple
 import networkx as nx
+
 class City(NamedTuple): #extend a named tuple to ensure that your node objects are hashable, which is required by networkx; could also use a properly configured data class
     name: str
     country: str
@@ -30,4 +31,10 @@ def load_graph(filename, node_factory): #callable factory for the node objects l
         (nodes[name1], nodes[name2], weights)
         for name1, name2, weights in graph.edges(data=True)
     )
+
+nodes, graph = load_graph("roadmap.dot", City.from_dict) #called the function with value arguments then stored in variables
+
+print(nodes["london"])
+
+print(graph)
     
