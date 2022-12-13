@@ -113,6 +113,25 @@ def retrace(previous, source, destination):
     path.appendleft(source)
     return list(path)
 
+def breadth_first_traverse(graph, source, order_by=None):
+    """Uses FIFO queue to keep track of the node neighbors"""
+    queue = Queue(source)
+    visited = {source}
+    #for node in queue:
+    #   yield node
+    """"the for loop can be used since there is a custom queue structure before that is iterable by dequeueing elements but it relies on a non-obvious implementation detail 
+    in the Queue class--making the while loop with walrus operator to yield a dequeued node is more conventional"""
+    while queue:
+        #yield is similar to return statement but returns a generator object the one that calls the function
+        yield (node := queue.dequeue()) #syntax := or walrus opearator assigns values to variables as part of a larger expression
+        neighbors = list(graph.neighbors(node))
+        if order_by:
+            neighbors.sort(key=order_by)
+        for neighbor in neighbors:
+            if neighbor not in visited: #if statement to mark visited nodes by adding them to a Python set, so that each neighbor is visited at most once
+                visited.add(neighbor)
+                queue.enqueue(neighbor)
+
 def breadth_first_search(graph, source, predicate, order_by=None):
     return search(breadth_first_traverse, graph, source, predicate, order_by)
 
@@ -154,3 +173,6 @@ def recursive_depth_first_traverse(graph, source, order_by=None):
                 yield from visit(neighbor) #doesn't push already visited neighbors onto the stack
 
     return visit(source) #pops one when the corresponding function returns
+
+def depth_first_search(graph, source, predicate, order_by=None):
+    return search(depth_first_traverse, graph, source, predicate, order_by)
