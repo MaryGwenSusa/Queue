@@ -46,7 +46,7 @@ def load_graph(filename, node_factory): #callable factory for the node objects l
         for name1, name2, weights in graph.edges(data=True)
     )
 
-def breadth_first_traverse(graph, source):
+def breadth_first_traverse(graph, source, order_by=None):
     """Uses FIFO queue to keep track of the node neighbors"""
     queue = Queue(source)
     visited = {source}
@@ -62,6 +62,7 @@ def breadth_first_traverse(graph, source):
                 visited.add(neighbor)
                 queue.enqueue(neighbor)
 
+"""However, a flaw is found that the functions dont't allow sorting the neighbors in a particular order"""
 def breadth_first_search(graph, source, predicate):
     """"This builds on top breadth_first_traverse by looping over the yielded nodes (using for loop), and stops once the current node meets the expected criteria (thru if 
     statement); then, returns it"""
@@ -94,6 +95,11 @@ nodes, graph = load_graph("roadmap.dot", City.from_dict) #called the function wi
 #city = breadth_first_search(graph, nodes["edinburgh"], is_twentieth_century)
 #print(city.name)
 
+
 for city in breadth_first_traverse(graph, nodes["edinburgh"]):
     print(city.name)
+
+#works exactly like this in the first attempt with netwrokx but the former fits perfectly with the current dataset:
+#for neighbor in graph.neighbors(nodes["london"]):
+    #print(neighbor.name)
     
