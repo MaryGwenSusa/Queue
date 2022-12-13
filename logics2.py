@@ -76,13 +76,20 @@ def retrace(previous, source, destination):
     path.appendleft(source)
     return list(path)
 
+def by_latitude(city):
+    return -city.latitude
+
 nodes, graph = load_graph("roadmap.dot", City.from_dict) #called the function with value arguments then stored in variables
 
 city1 = nodes["aberdeen"]
 city2 = nodes["perth"]
 
+
 """when visiting a code, this will keep track of the previous node that led you to it by saving this information as a key-value pair in a dictionary"""
 #for i, path in enumerate(nx.all_shortest_paths(graph, city1, city2), 1): #enumerate function takes a collectiona and returns objects
     #print(f"{i}.", " → ".join(city.name for city in path)) #.join function takes all items in an iterable and joins them into one string
 
-print(" → ".join(city.name for city in shortest_path(graph, city1, city2)))
+"""queue-based implementation of shortest path will give the same results from networkx
+
+this follows natural order of neighbors from the DOT file"""
+#print(" → ".join(city.name for city in shortest_path(graph, city1, city2)))
