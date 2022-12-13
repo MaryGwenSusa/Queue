@@ -73,7 +73,6 @@ messages.enqueue_with_priority(IMPORTANT, "Hazard lights turned on")
 #print(messages.dequeue())
 #print(messages.dequeue())
 
-
 @dataclass #used to represent messages in the queue; more convenient than strings but aren't comparable
 class Message:
     event: str
