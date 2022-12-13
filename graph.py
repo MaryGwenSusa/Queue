@@ -136,3 +136,6 @@ def depth_first_traverse(graph, source, order_by=None):
                 """
                 stack.enqueue(neighbor)
 
+def recursive_depth_first_traverse(graph, source, order_by=None):
+    visited = set()
+
