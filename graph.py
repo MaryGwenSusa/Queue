@@ -19,4 +19,10 @@ class City(NamedTuple): #extend a named tuple to ensure that your node objects a
         )
 
 def load_graph(filename, node_factory): #callable factory for the node objects like from the City.from_dict() class method
-    graph = nx.nx_agraph.read_dot(filename) #Reads a DOT file 
+    graph = nx.nx_agraph.read_dot(filename) #Reads a DOT file
+    #build a mapping of node identifiers to the object-oriented representation of the graph nodes 
+    nodes = {
+        name: node_factory(attributes)
+        for name, attributes in graph.nodes(data=True)
+    }
+    
