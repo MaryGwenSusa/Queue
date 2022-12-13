@@ -34,17 +34,7 @@ def load_graph(filename, node_factory): #callable factory for the node objects l
         for name1, name2, weights in graph.edges(data=True)
     )
 
-def load_graph(filename, node_factory): #callable factory for the node objects like from the City.from_dict() class method
-    graph = nx.nx_agraph.read_dot(filename) #Reads a DOT file
-    #build a mapping of node identifiers to the object-oriented representation of the graph nodes 
-    nodes = {
-        name: node_factory(attributes)
-        for name, attributes in graph.nodes(data=True)
-    }
-    #returns the mapping and a new graph comprising nodes and weighted edges
-    return nodes, nx.Graph(
-        (nodes[name1], nodes[name2], weights)
-        for name1, name2, weights in graph.edges(data=True)
-    )
-
 nodes, graph = load_graph("roadmap.dot", City.from_dict) #called the function with value arguments then stored in variables
+
+city1 = nodes["aberdeen"]
+city2 = nodes["perth"]
