@@ -124,4 +124,15 @@ def depth_first_traverse(graph, source, order_by=None):
             yield node
             visited.add(node)
             neighbors = list(graph.neighbors(node))
+            if order_by:
+                neighbors.sort(key=order_by)
+            for neighbor in reversed(neighbors): #LIFO queue
+                """this won't mark the neighbors as visited immediately after pushing them onto the stack, unlike, in the breadth-first-t structure 
+                which is this:
+                for neighbor in neighbors:
+                    if neighbor not in visited: #if statement to mark visited nodes by adding them to a Python set, so that each neighbor is visited at most once
+                        visited.add(neighbor)
+                        queue.enqueue(neighbor)
+                """
+                stack.enqueue(neighbor)
 
