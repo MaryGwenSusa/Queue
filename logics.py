@@ -53,9 +53,10 @@ def order(neighbors):
     def by_latitude(city):
         return city.latitude
     return iter(sorted(neighbors, key=by_latitude, reverse=True)) #iterates the sorted neighbors of a certain node according to their latitude
+    # iter () converts an iterable to the iterator
 
 nodes, graph = load_graph("roadmap.dot", City.from_dict) #called the function with value arguments then stored in variables
-for node in nx.bfs_tree(graph, nodes["edinburgh"]): #breadth-first search algorithm looks for a node that satisfies a particular condition by exploring the graph in concentric layers or levels
+for node in nx.bfs_tree(graph, nodes["edinburgh"], sort_neighbors=order): #breadth-first search algorithm looks for a node that satisfies a particular condition by exploring the graph in concentric layers or levels
     print("📍", node.name)
     if is_twentieth_century(node.year):
         print("Found:", node.name, node.year)
