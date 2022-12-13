@@ -113,5 +113,8 @@ def retrace(previous, source, destination):
     path.appendleft(source)
     return list(path)
 
-            
+#won't initially mark the source node as visited
+def depth_first_traverse(graph, source, order_by=None):
+    stack = Stack(source)
+    visited = set() #set() is used to convert any of the iterable to sequence of iterable elements with distinct elements
 
