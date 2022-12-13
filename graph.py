@@ -34,9 +34,11 @@ def load_graph(filename, node_factory): #callable factory for the node objects l
 
 nodes, graph = load_graph("roadmap.dot", City.from_dict) #called the function with value arguments then stored in variables
 
-"""identify the immediate neighbors in the purpose of looking for the shoertest path/finding available routes"""
-for neighbor in graph.neighbors(nodes["london"]):
-    print(neighbor.name)
+"""identify the immediate neighbors in the purpose of looking for the shortest path/finding available routes"""
+for neighbor, weights in graph[nodes["london"]].items(): #.items() used to return the list with all dictionary keys with values
+    # accessing the distance element attributes will process the possible weights of the connecting edges, such as distances or the estimated travel times, 
+    # and reveal it numerically which is needed as a basis for the best path
+    print(weights["distance"], neighbor.name)
 
 
     
