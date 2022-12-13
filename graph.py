@@ -3,6 +3,26 @@ from queues import Queue
 import networkx as nx
 from collections import deque
 
+class Queue(): #object constructor
+    """this class is a simple structure of a FIFO queue wherein you add another element to the last index then gets the first element from the left side 
+    or the one with zero index"""
+    def __init__(self, *elements):
+        """here inputting initial elements is allowed"""
+        self._elements = deque(elements)
+
+    def enqueue(self, element):
+        self._elements.append(element)
+
+    def dequeue(self):
+        return self._elements.popleft()
+        
+class Stack():
+    """this program is a simple structure of a LIFO queue hwerein you add naother element to the last index then gets the last element you add first"""
+    def dequeue(self):
+        # this was for the FIFO -- return self._elements.popleft() #gets the first element from the left since this is portrayed in a horizontal manner but still preserves 
+        # the general idea of a stack
+        return self._elements.pop() #gets the last element
+
 class City(NamedTuple): #extend a named tuple to ensure that your node objects are hashable, which is required by networkx; could also use a properly configured data class
     name: str
     country: str

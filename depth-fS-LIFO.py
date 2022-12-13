@@ -1,6 +1,7 @@
 import networkx as nx
 from typing import NamedTuple
 
+"""depth-first traversal follows a path from the source node by plunging into the graph as deeply as possible before backtracking to the last edge crossing and trying another branch"""
 
 class City(NamedTuple): #extend a named tuple to ensure that your node objects are hashable, which is required by networkx; could also use a properly configured data class
     name: str
