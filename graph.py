@@ -51,6 +51,8 @@ for neighbor, weights in sort_by(graph[nodes["london"]], by_distance):
     # and reveal it numerically which is needed as a basis for the best path
     print(f"{weights['distance']:>3} miles, {neighbor.name}")
 
+
+"""this defined function takes another node as an argument and optionally lets you order the neighbors using a custom strategy"""
 def shortest_path(graph, source, destination, order_by=None):
     """Uses FIFO queue to keep track of the node neighbors"""
     queue = Queue(source)
@@ -62,7 +64,7 @@ def shortest_path(graph, source, destination, order_by=None):
     in the Queue class--making the while loop with walrus operator to yield a dequeued node is more conventional"""
     while queue:
         #yield is similar to return statement but returns a generator object the one that calls the function
-        yield (node := queue.dequeue()) #syntax := or walrus opearator assigns values to variables as part of a larger expression
+        node = queue.dequeue() #syntax := or walrus opearator assigns values to variables as part of a larger expression
         neighbors = list(graph.neighbors(node))
         if order_by:
             neighbors.sort(key=order_by)
@@ -70,4 +72,6 @@ def shortest_path(graph, source, destination, order_by=None):
             if neighbor not in visited: #if statement to mark visited nodes by adding them to a Python set, so that each neighbor is visited at most once
                 visited.add(neighbor)
                 queue.enqueue(neighbor)
+                previous[neighbor] = node #populates dict of visited neighbors by associating it previous nodes on the path
+            
 
