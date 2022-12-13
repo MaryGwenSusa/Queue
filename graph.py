@@ -116,5 +116,12 @@ def retrace(previous, source, destination):
 #won't initially mark the source node as visited
 def depth_first_traverse(graph, source, order_by=None):
     stack = Stack(source)
+    #visited nodes are initialized to an empty set before popping elements from the stack 
     visited = set() #set() is used to convert any of the iterable to sequence of iterable elements with distinct elements
+    while stack:
+        #checks if the node was already visited much earlier than in the breadth-first traversal
+        if (node := stack.dequeue()) not in visited:
+            yield node
+            visited.add(node)
+            neighbors = list(graph.neighbors(node))
 
