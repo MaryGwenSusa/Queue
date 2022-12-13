@@ -45,7 +45,7 @@ def by_distance(weights):
 
 """identify the immediate neighbors in the purpose of looking for the shortest path/finding available routes"""
 for neighbor, weights in sort_by(graph[nodes["london"]], by_distance): 
-    """defined an iteration over the neighbors of "London", sorted by distance in ascending order"""
+    """an iteration over the neighbors of "London", sorted by distance in ascending order"""
     # accessing the distance element attributes will process the possible weights of the connecting edges, such as distances or the estimated travel times, 
     # and reveal it numerically which is needed as a basis for the best path
     print(f"{weights['distance']:>3} miles, {neighbor.name}")
