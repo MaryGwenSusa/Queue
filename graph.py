@@ -35,8 +35,13 @@ def load_graph(filename, node_factory): #callable factory for the node objects l
 nodes, graph = load_graph("roadmap.dot", City.from_dict) #called the function with value arguments then stored in variables
 
 def sort_by(neighbors, strategy):
-    """helper function that returns a list of neighbors and their weights sorted by the specified strategy""""
+    """helper function that returns a list of neighbors and their weights sorted by taking the dictionary of all the weights associated with an edge and 
+    returns a sorting key."""
     return sorted(neighbors.items(), key=lambda item: strategy(item[1]))
+
+def by_distance(weights):
+    """defined a concrete strategy that produces a floating-point distance based on the input dictionary"""
+    return float(weights["distance"])
 
 """identify the immediate neighbors in the purpose of looking for the shortest path/finding available routes"""
 for neighbor, weights in graph[nodes["london"]].items(): #.items() used to return the list with all dictionary keys with values
