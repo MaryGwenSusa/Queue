@@ -113,6 +113,9 @@ def retrace(previous, source, destination):
     path.appendleft(source)
     return list(path)
 
+def breadth_first_search(graph, source, predicate, order_by=None):
+    return search(breadth_first_traverse, graph, source, predicate, order_by)
+
 #won't initially mark the source node as visited
 def depth_first_traverse(graph, source, order_by=None):
     stack = Stack(source)
