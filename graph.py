@@ -176,3 +176,10 @@ def recursive_depth_first_traverse(graph, source, order_by=None):
 
 def depth_first_search(graph, source, predicate, order_by=None):
     return search(depth_first_traverse, graph, source, predicate, order_by)
+
+def search(traverse, graph, source, predicate, order_by=None):
+    """called by breadth_first_search and depth_first_search looping over the yielded nodes (using for loop), and stops once the current node meets the expected criteria (thru if 
+    statement); then, returns it"""
+    for node in traverse(graph, source, order_by): 
+        if predicate(node):
+            return node
