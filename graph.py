@@ -37,17 +37,18 @@ nodes, graph = load_graph("roadmap.dot", City.from_dict) #called the function wi
 def sort_by(neighbors, strategy):
     """helper function that returns a list of neighbors and their weights sorted by taking the dictionary of all the weights associated with an edge and 
     returns a sorting key."""
-    return sorted(neighbors.items(), key=lambda item: strategy(item[1]))
+    return sorted(neighbors.items(), key=lambda item: strategy(item[1])) #.items() used to return the list with all dictionary keys with values
 
 def by_distance(weights):
     """defined a concrete strategy that produces a floating-point distance based on the input dictionary"""
     return float(weights["distance"])
 
 """identify the immediate neighbors in the purpose of looking for the shortest path/finding available routes"""
-for neighbor, weights in graph[nodes["london"]].items(): #.items() used to return the list with all dictionary keys with values
+for neighbor, weights in sort_by(graph[nodes["london"]], by_distance): 
+    """defined an iteration over the neighbors of "London", sorted by distance in ascending order"""
     # accessing the distance element attributes will process the possible weights of the connecting edges, such as distances or the estimated travel times, 
     # and reveal it numerically which is needed as a basis for the best path
-    print(weights["distance"], neighbor.name)
+    print(f"{weights['distance']:>3} miles, {neighbor.name}")
 
 
     
