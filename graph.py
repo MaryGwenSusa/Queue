@@ -139,10 +139,13 @@ def depth_first_traverse(graph, source, order_by=None):
 # call stack saved for backtracking and rewritten the function recursively
 def recursive_depth_first_traverse(graph, source, order_by=None):
     visited = set()
-
-    def visit(node):
+    """avoid maintaining a stack of your own, as Python pushes each function call on a stack behind the scenes"""
+    def visit(node): #only need to keep track of the visited nodes
         yield node
         visited.add(node)
         neighbors = list(graph.neighbors(node))
         if order_by:
             neighbors.sort(key=order_by)
+        for neighbor in neighbors: #no need to reverse the neighbors when iterating over them
+            if neighbor not in visited:
+                yield from visit(neighbor) #doesn't push already visited neighbors onto the stack
