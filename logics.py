@@ -70,9 +70,9 @@ def breadth_first_search(graph, source, predicate):
             return node
     
 
-def is_twentieth_century(year):
+def is_twentieth_century(city):
     """defined a function that returns only qualified node from the boolean conditions of the target year"""
-    return year and 1901 <= year <= 2000
+    return city.year and 1901 <= city.year <= 2000
 
 #def order(neighbors):
     """order() wraps a list of sorted neighbors in a call to iter(). it’s because nx.bfs_tree() expects an iterator object as input for its sort_neighbors argument"""
