@@ -93,8 +93,20 @@ class Worker(threading.Thread):
             sleep(delay / 100) #will make it appear as if it is loading
             self.progress += 1 #increment
 
+"""this class will render the current state of producers, consumers, and the queue ten times a second"""
 class View:
     def __init__(self, buffer, producers, consumers):
         self.buffer = buffer
         self.producers = producers
         self.consumers = consumers
+
+    def animate(self):
+        #with statement ensures proper acquisition and release of resources
+        #screen=True will opt to show a Live display in the “alternate screen” upon setting it on the constructor. this will allow your live display to go full screen and restore the command prompt on exit
+        #By default, the live display will refresh 4 times a second. the refresh rate can be with the refresh_per_second argument on the Live constructor
+        """from rich module, live display is used to animate parts of the terminal"""
+        with Live(
+            self.render(), screen=True, refresh_per_second=10
+        ) as live:
+            while True:
+                live.update(self.render()) #.update() is useful if the information to display is too dynamic to generate by updating a single renderable
