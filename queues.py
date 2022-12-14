@@ -63,13 +63,21 @@ class PriorityQueue(IterableMixin):
         #since there are three components inside the tuple--when performing a dequeue operation, you’ll unpack the value from the tuple by accessing its third component, 
         # located at index two. it would be safer to use the -1 to indicate the last component regardless of the number of components in the tuple--using the square bracket ([]) syntax 
 
-"""this specialized priority queue stores data class elements instead of tuples because the elements must be mutable. Notice the additional order flag, which makes the elements comparable,
- just like tuples:"""
+
+"""this specialized priority queue stores data class elements instead of tuples because the elements must be mutable. Notice the additional order flag, which makes the elements
+ comparable, just like tuples. This is a mutable version of min-heap to enqueue unvisited nodes and update the element priorities when discovering cheaper connections"""
 @dataclass(order=True) 
 class Element:
     priority: float
     count: int
     value: Any
+
+class MutableMinHeap(IterableMixin):
+    def __init__(self):
+        super().__init__() #super () used to give access to methods and properties of a parent or sibling class
+        self._elements_by_value = {}
+        self._elements = []
+        self._counter = count()
 
 messages = PriorityQueue() #called the class
 messages.enqueue_with_priority(IMPORTANT, "Windshield wipers turned on") #syntax to calling functions and adding value/argument to the parameter
