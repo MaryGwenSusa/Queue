@@ -11,8 +11,11 @@ def is_twentieth_century(city):
 
 nodes, graph = load_graph("roadmap.dot", City.from_dict)
 
-city = dfs(graph, nodes["edinburgh"], is_twentieth_century)
-print(city.name)
+#city = dfs(graph, nodes["edinburgh"], is_twentieth_century)
+#print(city.name)
+
+for city in depth_first_traverse(graph, nodes["edinburgh"]):
+    print(city.name)
 
 #for node in nx.dfs_tree(graph, nodes["edinburgh"]):
     #print("📍", node.name)

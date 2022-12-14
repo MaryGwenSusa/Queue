@@ -3,7 +3,19 @@ from queues import Queue
 import networkx as nx
 from collections import deque
 
-class Queue(): #object constructor
+class IterableMixin: #inclusion of a mixin class rather than pure inheritance
+    #mixins are great for encapsulating behavior rather than state
+    #by composing a class with one or more mixins, you can change or augment its original behavior.
+    def __len__(self): # this reports the stack's number of elements
+        """defining __len__ will make len() work since it calls upon __len__"""
+        return len(self._elements)
+    
+    def __iter__(self): ##this will make class instances usable/iterable through looping
+        """"when iterating this will automatically dequeue elements"""
+        while len(self) > 0:
+            yield self.dequeue() #yield is similar to return statement but returns a generator object the one that calls the function
+
+class Queue(IterableMixin): #object constructor
     """this class is a simple structure of a FIFO queue wherein you add another element to the last index then gets the first element from the left side 
     or the one with zero index"""
     def __init__(self, *elements):
@@ -183,3 +195,6 @@ def search(traverse, graph, source, predicate, order_by=None):
     for node in traverse(graph, source, order_by): 
         if predicate(node):
             return node
+
+for city in depth_first_traverse(graph, nodes["edinburgh"]):
+    print(city.name)
