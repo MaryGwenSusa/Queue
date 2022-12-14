@@ -10,6 +10,8 @@ from rich.console import Group
 from rich.live import Live
 from rich.panel import Panel
 
+#FIRST SYNCHRONIZED QUEUE, UNBOUNDED FIFO QUEUE
+
 """this dictionary maps queue names to their respective classes, which you call to create a new queue instance based on the value of a command-line argument"""
 QUEUE_TYPES = {
     "fifo": Queue,
@@ -17,6 +19,8 @@ QUEUE_TYPES = {
     "heap": PriorityQueue
 }
 
+"""producers will always push their finished products through the queue to the consumers. Even though it may sometimes appear as if a consumer takes an element directly from 
+a producer, it’s only because things are happening too fast to notice the enqueue and dequeue operations"""
 def main(args):
     """this function is the entry point which receives the parsed arguments (thru argparse module) supplied by parse_args()"""
     """the number of producers and consumers is determined by the command-line arguments passed into your function. They’ll begin working and using the queue for interthread 
@@ -37,6 +41,9 @@ def main(args):
 
     for consumer in consumers:
         consumer.start()
+    
+    view = View(buffer, producers, consumers) #view instance continually re-renders the screen to reflect the current state of your application
+    view.animate() 
 
 
 def parse_args():
@@ -195,3 +202,7 @@ class Consumer(Worker):
             self.simulate_work()
             self.buffer.task_done() #task_done() marks the task as done
             self.simulate_idle()
+
+#You can increase the number of producers, their speed, or both to see how these changes affect the overall capacity of your system. Because the queue is unbounded, 
+# it’ll never slow down the producers. However, if you specified the queue’s maxsize parameter, then it would start blocking them until there was enough space in the 
+# queue again.
