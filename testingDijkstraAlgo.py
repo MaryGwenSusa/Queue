@@ -10,5 +10,8 @@ def distance(weights):
     """defined a concrete strategy that produces a floating-point distance based on the input dictionary"""
     return float(weights["distance"])
 
-for city in dijkstra_shortest_path(graph, city1, city2, distance):
-    print(city.name)
+#for city in dijkstra_shortest_path(graph, city1, city2, distance):
+#    print(city.name)
+
+def weight(node1, node2, weights):
+    return distance(weights)
