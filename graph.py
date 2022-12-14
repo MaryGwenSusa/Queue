@@ -210,9 +210,13 @@ def dijkstra_shortest_path(graph, source, destination, weight_factory):
 
     while unvisited:
         visited.add(node := unvisited.dequeue())
+        for neighbor, weights in graph[node].items():
+            """When a cheaper path to a neighbor is found, this if condition statement will update its total distance from the source in the priority queue, which rebalances 
+            itself so that an unvisited node with the shortest distance will pop up first next time"""
+            if neighbor not in visited:
+                weight = weight_factory(weights)
+                new_distance = unvisited[node] + weight
 
-for city in depth_first_traverse(graph, nodes["edinburgh"]):
-    print(city.name)
+#for city in depth_first_traverse(graph, nodes["edinburgh"]):
+#    print(city.name)
 
-#Later, when you find a cheaper path to a neighbor, you update its total distance from the source in the priority queue, which rebalances itself so that an unvisited node with the 
-#shortest distance will pop up first next time.
