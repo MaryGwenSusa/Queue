@@ -12,6 +12,10 @@ from rich.panel import Panel
 from dataclasses import dataclass, field
 from enum import IntEnum
 
+"""You provide either plain or prioritized products depending on a command-line argument using a conditional expression. 
+ The rest of your code can remain agnostic to this change as long as the producers and consumers know how to deal with a new product type. Because this is only a simulation, 
+ the worker threads don’t really do anything useful with the products, so you can run your script with the --queue heap flag and see the effect"""
+
 #FIRST SYNCHRONIZED QUEUE, UNBOUNDED FIFO QUEUE
 """You can increase the number of producers, their speed, or both to see how these changes affect the overall capacity of your system. Because the queue is unbounded, 
 it’ll never slow down the producers. However, if you specified the queue’s maxsize parameter, then it would start blocking them until there was enough space in the queue again."""
@@ -24,7 +28,10 @@ bottom of the stack and never get consumed. On the other hand, that might not be
 products.
 Starvation is a problem encountered in concurrent computing where a process is perpetually denied necessary resources to process its work."""
 
-#
+#queue.PriorityQueue
+"""Remember that a heap data structure is a binary tree, which keeps a specific relationship between its elements. Therefore, even though the products in the priority queue
+ don’t appear to be arranged quite correctly, they’re actually consumed in the right order. Also, because of the non-deterministic nature of multithreaded programming, Python
+ queues don’t always report their most up-to-date size."""
 
 """this dictionary maps queue names to their respective classes, which you call to create a new queue instance based on the value of a command-line argument"""
 QUEUE_TYPES = {
@@ -40,8 +47,10 @@ def main(args):
     """the number of producers and consumers is determined by the command-line arguments passed into your function. They’ll begin working and using the queue for interthread 
     communication as soon as you start them."""
     buffer = QUEUE_TYPES[args.queue]()
+    #when the user supplies the --queue heap option in the command line, the program will supply the right collection of products to the producer threads
+    products = PRIORITIZED_PRODUCTS if args.queue == "heap" else PRODUCTS
     producers = [
-        Producer(args.producer_speed, buffer, PRODUCTS)
+        Producer(args.producer_speed, buffer, products)
         #for _ in range is used when there is no interest in values returned by a function--underscore in place of variable name. basically, there is no interest in how many 
         # times the loop is run, just that it should run some specific number of times overall
         for _ in range(args.producers)
