@@ -5,7 +5,6 @@ from itertools import count
 #lexicographic order - the alphabetical order of the dictionaries to sequences of ordered symbols or, more generally, of elements of a totally ordered set
 from dataclasses import dataclass 
 from heapq import heapify, heappush, heappop
-#from queues import PriorityQueue
 #heap compares elements by value not by priority so Python’s tuple can be used for comparison which takes into account the tuple’s components
 """This current program actually just has a problem with numerical value and turns out there are a lot of ways to fix this"""
 #variables with value as argument for priority parameter

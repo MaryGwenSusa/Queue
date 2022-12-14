@@ -9,8 +9,22 @@ from rich.columns import Columns
 from rich.console import Group
 from rich.live import Live
 from rich.panel import Panel
+from dataclasses import dataclass, field
+from enum import IntEnum
 
 #FIRST SYNCHRONIZED QUEUE, UNBOUNDED FIFO QUEUE
+"""You can increase the number of producers, their speed, or both to see how these changes affect the overall capacity of your system. Because the queue is unbounded, 
+it’ll never slow down the producers. However, if you specified the queue’s maxsize parameter, then it would start blocking them until there was enough space in the queue again."""
+
+#queue.LifoQueue
+"""When you use a LIFO queue or a stack, each new product that has just been created will take precedence over the older ones in the queue
+
+In rare cases, when new products are created more quickly than your consumers can cope with them, older products might suffer from starvation because they get stuck at the
+bottom of the stack and never get consumed. On the other hand, that might not be a problem when you have a big enough consumer pool or when you don’t get as many incoming
+products.
+Starvation is a problem encountered in concurrent computing where a process is perpetually denied necessary resources to process its work."""
+
+#
 
 """this dictionary maps queue names to their respective classes, which you call to create a new queue instance based on the value of a command-line argument"""
 QUEUE_TYPES = {
@@ -206,3 +220,14 @@ class Consumer(Worker):
 #You can increase the number of producers, their speed, or both to see how these changes affect the overall capacity of your system. Because the queue is unbounded, 
 # it’ll never slow down the producers. However, if you specified the queue’s maxsize parameter, then it would start blocking them until there was enough space in the 
 # queue again.
+
+#PriorityQueue
+#dataclass() decorator examines the class to find field/s 
+#field is defined as a class variable that has a type annotation
+@dataclass(order=True)
+class Product:
+    priority: int
+    label: str = field(compare=False)
+
+    def __str__(self):
+        return self.label
