@@ -19,7 +19,25 @@ QUEUE_TYPES = {
 
 def main(args):
     """this function is the entry point which receives the parsed arguments (thru argparse module) supplied by parse_args()"""
+    """the number of producers and consumers is determined by the command-line arguments passed into your function. They’ll begin working and using the queue for interthread 
+    communication as soon as you start them."""
     buffer = QUEUE_TYPES[args.queue]()
+    producers = [
+        Producer(args.producer_speed, buffer, PRODUCTS)
+        #for _ in range is used when there is no interest in values returned by a function--underscore in place of variable name. basically, there is no interest in how many 
+        # times the loop is run, just that it should run some specific number of times overall
+        for _ in range(args.producers)
+    ]
+    consumers = [
+        Consumer(args.consumer_speed, buffer) for _ in range(args.consumers)
+    ]
+
+    for producer in producers:
+        producer.start() #start() simply starts thread activity
+
+    for consumer in consumers:
+        consumer.start()
+
 
 def parse_args():
     """this function supplies parsed arguments"""
@@ -168,6 +186,11 @@ class Consumer(Worker):
     """similar structure with Producer class but more straight-forward """
     def run(self):
         while True:
+            #get() blocks by default, which will keep the consumer thread stopped and waiting until there’s at least one product in the queue. this way, a waiting consumer 
+            # won’t be wasting any CPU cycles while the operating system allocates valuable resources to other threads doing useful work
+            #to avoid a deadlock, you can optionally set a timeout on the .get() method by passing a timeout keyword argument with the number of seconds to wait before 
+            # giving up
+            #deadlock is a concurrency failure mode where a thread or threads wait for a condition that never occurs
             self.product = self.buffer.get() #get() method returns the value of the item in a dict with the specified key
             self.simulate_work()
             self.buffer.task_done() #task_done() marks the task as done
