@@ -163,3 +163,12 @@ class Producer(Worker):
             self.simulate_work()
             self.buffer.put(self.product)
             self.simulate_idle()
+
+class Consumer(Worker):
+    """similar structure with Producer class but more straight-forward """
+    def run(self):
+        while True:
+            self.product = self.buffer.get() #get() method returns the value of the item in a dict with the specified key
+            self.simulate_work()
+            self.buffer.task_done() #task_done() marks the task as done
+            self.simulate_idle()
