@@ -1,6 +1,8 @@
 import argparse #makes it easy to write user-friendly command-line interfaces
 from queue import LifoQueue, PriorityQueue, Queue
 import threading
+from random import randint
+from time import sleep
 
 """this dictionary maps queue names to their respective classes, which you call to create a new queue instance based on the value of a command-line argument"""
 QUEUE_TYPES = {
@@ -50,7 +52,7 @@ PRODUCTS = (
 
 # producer and consumer threads will share a wealth of attributes and behaviors, which will be both encapsulated in Worker class
 """worker class will extend the threading.Thread class and configures itself as a daemon thread so that its instances won’t prevent the program from exiting when the main 
-thread finishes (like when there's a keyboard interrupt"""
+thread finishes (like when there's a keyboard interrupt)"""
 class Worker(threading.Thread):
     def __init__(self, speed, buffer):
         #a worker object expects the speed rate to work with and a buffer queue to put finished products into or get them from
@@ -61,3 +63,10 @@ class Worker(threading.Thread):
         self.working = False
         self.progress = 0
     
+    #@python decorator makes usage of getter and setters much easier in Object-Oriented Programming
+    @property
+    def state(self):
+        """this method returns a string with either the product’s name and the progress of work or a generic message indicating that the worker is currently idle"""
+        if self.working:
+            return f"{self.product} ({self.progress}%)"
+        return ":zzz: Idle"
