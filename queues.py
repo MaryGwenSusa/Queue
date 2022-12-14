@@ -64,6 +64,9 @@ class PriorityQueue(IterableMixin):
         # located at index two. it would be safer to use the -1 to indicate the last component regardless of the number of components in the tuple--using the square bracket ([]) syntax 
 
 
+
+
+#Dijkstra’s algorithm
 """this specialized priority queue stores data class elements instead of tuples because the elements must be mutable. Notice the additional order flag, which makes the elements
  comparable, just like tuples. This is a mutable version of min-heap (behaves mostly the same as the regular priority queue) to enqueue unvisited nodes and update the element 
  priorities (using the square bracket syntax) when discovering cheaper connections"""
@@ -79,11 +82,18 @@ class MutableMinHeap(IterableMixin):
         self._elements_by_value = {}
         self._elements = []
         self._counter = count()
-    
+
+    """This will sweep the weighted edges of every unvisited node in a greedy manner by checking whether they provide a cheaper connection from the source to one of the current 
+    neighbors. The total cost of a path from the source to the neighbor is the sum of the edges weight and the cumulative cost from the source to the currently visited node. 
+    Sometimes, a path consisting of more nodes will have a smaller total cost."""
     def __setitem__(self, unique_value, priority):
         if unique_value in self._elements_by_value:
             self._elements_by_value[unique_value].priority = priority
             heapify(self._elements) #heapify is the process of creating a heap data structure from a binary tree. it is used to create a Min-Heap or a Max-Heap
+        else:
+            element = Element(priority, next(self._counter), unique_value)
+            self._elements_by_value[unique_value] = element
+            heappush(self._elements, element)
 
 messages = PriorityQueue() #called the class
 messages.enqueue_with_priority(IMPORTANT, "Windshield wipers turned on") #syntax to calling functions and adding value/argument to the parameter
