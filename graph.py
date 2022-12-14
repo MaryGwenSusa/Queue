@@ -1,5 +1,6 @@
 from typing import NamedTuple
-from queues import Queue
+from math import inf as infinity
+from queues import MutableMinHeap
 import networkx as nx
 from collections import deque
 
