@@ -154,3 +154,12 @@ class Producer(Worker):
     def __init__(self, speed, buffer, products):
         super().__init__(speed, buffer)
         self.products = products
+
+    def run(self):
+        """a producer works in an infinite loop, choosing a random product and simulating some work before putting that product onto the queue, called a buffer. It then 
+         to sleep for a random period, and when it wakes up again, the process repeats"""
+        while True:
+            self.product = choice(self.products) #choice() method, from random module, returns a randomly selected element from the specified sequence
+            self.simulate_work()
+            self.buffer.put(self.product)
+            self.simulate_idle()
