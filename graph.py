@@ -197,5 +197,9 @@ def search(traverse, graph, source, predicate, order_by=None):
         if predicate(node):
             return node
 
+def dijkstra_shortest_path(graph, source, destination, weight_factory):
+    previous = {}
+    visited = set()
+
 for city in depth_first_traverse(graph, nodes["edinburgh"]):
     print(city.name)
