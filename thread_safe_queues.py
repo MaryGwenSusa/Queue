@@ -227,7 +227,13 @@ class Consumer(Worker):
 @dataclass(order=True)
 class Product:
     priority: int
-    label: str = field(compare=False)
+    #In this case, the label is expected to be a string, but generally, it could be any object that might not be comparable at all
+    label: str = field(compare=False) #field() from dataclasses module, will return an object to identify its dataclass; making the label in this case not restrained to str
 
     def __str__(self):
         return self.label
+    
+class Priority(IntEnum): #members should be integer, from enum module
+    HIGH = 1
+    MEDIUM = 2
+    LOW = 3
