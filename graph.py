@@ -16,7 +16,7 @@ class Queue(): #object constructor
     def dequeue(self):
         return self._elements.popleft()
         
-class Stack():
+class Stack(Queue):
     """this program is a simple structure of a LIFO queue hwerein you add naother element to the last index then gets the last element you add first"""
     def dequeue(self):
         # this was for the FIFO -- return self._elements.popleft() #gets the first element from the left since this is portrayed in a horizontal manner but still preserves 
@@ -66,11 +66,11 @@ def by_distance(weights):
     return float(weights["distance"])
 
 """identify the immediate neighbors in the purpose of looking for the shortest path/finding available routes"""
-for neighbor, weights in sort_by(graph[nodes["london"]], by_distance): 
-    """an iteration over the neighbors of "London", sorted by distance in ascending order"""
+#for neighbor, weights in sort_by(graph[nodes["london"]], by_distance): 
+"""an iteration over the neighbors of "London", sorted by distance in ascending order"""
     # accessing the distance element attributes will process the possible weights of the connecting edges, such as distances or the estimated travel times, 
     # and reveal it numerically which is needed as a basis for the best path
-    print(f"{weights['distance']:>3} miles, {neighbor.name}")
+    #print(f"{weights['distance']:>3} miles, {neighbor.name}")
 
 
 """this defined function takes another node as an argument and optionally lets you order the neighbors using a custom strategy"""
