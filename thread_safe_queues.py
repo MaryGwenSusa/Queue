@@ -137,4 +137,14 @@ class View:
             right_panel = self.panel(consumer, f"Consumer {i}")
             rows.append(Columns([left_panel, right_panel], width=40)) #Columns(), from rich module, displays renderables in neat columns
         return Group(*rows) #Group(), from rich module, takes a group of renderables (group of rows in this case) and returns a renderable object that renders the group
+    
+    def panel(self, worker, title):
+        """this method focuses on the alignment of the product and its 'progress'""""
+        if worker is None:
+            return ""
+        padding = " " * int(29 / 100 * worker.progress)
+        align = Align(
+            padding + worker.state, align="left", vertical="middle"
+        ) #Align function also from rich module aligns renderable by adding space if necessary
+        return Panel(align, height=5, title=title)
 
