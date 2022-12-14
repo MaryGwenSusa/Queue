@@ -3,6 +3,12 @@ from queue import LifoQueue, PriorityQueue, Queue
 import threading
 from random import randint
 from time import sleep
+from itertools import zip_longest
+from rich.align import Align
+from rich.columns import Columns
+from rich.console import Group
+from rich.live import Live
+from rich.panel import Panel
 
 """this dictionary maps queue names to their respective classes, which you call to create a new queue instance based on the value of a command-line argument"""
 QUEUE_TYPES = {
@@ -82,7 +88,13 @@ class Worker(threading.Thread):
         """this method picks a random delay in seconds (with the help of randint function) adjusted to the worker’s speed and progresses through the work"""
         self.working = True
         self.progress = 0
-        delay = randint(1, 1 + 15 // self.speed)
+        delay = randint(1, 1 + 15 // self.speed) #makes sure the progress is somehow realistic
         for _ in range(100): #to progress to "100%" completeness
-            sleep(delay / 100)
-            self.progress += 1
+            sleep(delay / 100) #will make it appear as if it is loading
+            self.progress += 1 #increment
+
+class View:
+    def __init__(self, buffer, producers, consumers):
+        self.buffer = buffer
+        self.producers = producers
+        self.consumers = consumers
