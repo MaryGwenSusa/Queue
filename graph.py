@@ -201,5 +201,15 @@ def dijkstra_shortest_path(graph, source, destination, weight_factory):
     previous = {}
     visited = set()
 
+    unvisited = MutableMinHeap()
+    """Initially, the distance to all destination cities is unknown, so an infinite cost should be assigned to each unvisited city except for the source, which has a distance 
+    equal to zero"""
+    for node in graph.nodes:
+        unvisited[node] = infinity
+    unvisited[source] = 0
+
 for city in depth_first_traverse(graph, nodes["edinburgh"]):
     print(city.name)
+
+#Later, when you find a cheaper path to a neighbor, you update its total distance from the source in the priority queue, which rebalances itself so that an unvisited node with the 
+#shortest distance will pop up first next time.
