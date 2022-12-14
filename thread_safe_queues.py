@@ -110,3 +110,18 @@ class View:
         ) as live:
             while True:
                 live.update(self.render()) #.update() is useful if the information to display is too dynamic to generate by updating a single renderable
+
+    def render(self):
+        #match case statement in Python is more powerful and allows for more complicated pattern matching
+        match self.buffer:
+            case PriorityQueue():
+                title = "Priority Queue"
+                products = map(str, reversed(list(self.buffer.queue)))
+            case LifoQueue():
+                title = "Stack"
+                products = list(self.buffer.queue)
+            case Queue():
+                title = "Queue"
+                products = reversed(list(self.buffer.queue))
+            case _: #equivalent to else in if-elif-else statement
+                title = products = ""
