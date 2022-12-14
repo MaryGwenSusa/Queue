@@ -65,7 +65,8 @@ class PriorityQueue(IterableMixin):
 
 
 """this specialized priority queue stores data class elements instead of tuples because the elements must be mutable. Notice the additional order flag, which makes the elements
- comparable, just like tuples. This is a mutable version of min-heap to enqueue unvisited nodes and update the element priorities when discovering cheaper connections"""
+ comparable, just like tuples. This is a mutable version of min-heap (behaves mostly the same as the regular priority queue) to enqueue unvisited nodes and update the element 
+ priorities (using the square bracket syntax) when discovering cheaper connections"""
 @dataclass(order=True) 
 class Element:
     priority: float
@@ -74,10 +75,15 @@ class Element:
 
 class MutableMinHeap(IterableMixin):
     def __init__(self):
-        super().__init__() #super () used to give access to methods and properties of a parent or sibling class
+        super().__init__() #super() used to give access to methods and properties of a parent or sibling class
         self._elements_by_value = {}
         self._elements = []
         self._counter = count()
+    
+    def __setitem__(self, unique_value, priority):
+        if unique_value in self._elements_by_value:
+            self._elements_by_value[unique_value].priority = priority
+            heapify(self._elements) #heapify is the process of creating a heap data structure from a binary tree. it is used to create a Min-Heap or a Max-Heap
 
 messages = PriorityQueue() #called the class
 messages.enqueue_with_priority(IMPORTANT, "Windshield wipers turned on") #syntax to calling functions and adding value/argument to the parameter
