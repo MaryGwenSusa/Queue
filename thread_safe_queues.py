@@ -40,51 +40,6 @@ QUEUE_TYPES = {
     "heap": PriorityQueue
 }
 
-"""producers will always push their finished products through the queue to the consumers. Even though it may sometimes appear as if a consumer takes an element directly from 
-a producer, it’s only because things are happening too fast to notice the enqueue and dequeue operations"""
-def main(args):
-    """this function is the entry point which receives the parsed arguments (thru argparse module) supplied by parse_args()"""
-    """the number of producers and consumers is determined by the command-line arguments passed into your function. They’ll begin working and using the queue for interthread 
-    communication as soon as you start them."""
-    buffer = QUEUE_TYPES[args.queue]()
-    #when the user supplies the --queue heap option in the command line, the program will supply the right collection of products to the producer threads
-    products = PRIORITIZED_PRODUCTS if args.queue == "heap" else PRODUCTS
-    producers = [
-        Producer(args.producer_speed, buffer, products)
-        #for _ in range is used when there is no interest in values returned by a function--underscore in place of variable name. basically, there is no interest in how many 
-        # times the loop is run, just that it should run some specific number of times overall
-        for _ in range(args.producers)
-    ]
-    consumers = [
-        Consumer(args.consumer_speed, buffer) for _ in range(args.consumers)
-    ]
-
-    for producer in producers:
-        producer.start() #start() simply starts thread activity
-
-    for consumer in consumers:
-        consumer.start()
-    
-    view = View(buffer, producers, consumers) #view instance continually re-renders the screen to reflect the current state of your application
-    view.animate() 
-
-
-def parse_args():
-    """this function supplies parsed arguments"""
-    parser = argparse.ArgumentParser() #argparse.ArgumentParser() is a container for argument specifications and has options that apply the parser as whole
-    parser.add_argument("-q", "--queue", choices=QUEUE_TYPES, default="fifo") #.add_argument method attaches individual argument specifications to the parser. It supports positional arguments, options that accept values, and on/off flags
-    parser.add_argument("-p", "--producers", type=int, default=3)
-    parser.add_argument("-c", "--consumers", type=int, default=2)
-    parser.add_argument("-ps", "--producer-speed", type=int, default=1)
-    parser.add_argument("-cs", "--consumer-speed", type=int, default=1)
-    return parser.parse_args()
-
-if __name__ == "__main__":
-    try:
-        main(parse_args())
-    except KeyboardInterrupt: #thrown when a user or programmer interrupts a program's usual execution
-        pass
-
 PRODUCTS = (
     ":balloon:",
     ":cookie:",
@@ -103,6 +58,29 @@ PRODUCTS = (
     ":yo-yo:",
 )
 
+#PriorityQueue
+#dataclass() decorator examines the class to find field/s 
+#field is defined as a class variable that has a type annotation
+@dataclass(order=True)
+class Product:
+    priority: int
+    #In this case, the label is expected to be a string, but generally, it could be any object that might not be comparable at all
+    label: str = field(compare=False) #field() from dataclasses module, will return an object to identify its dataclass; making the label in this case not restrained to str
+
+    def __str__(self):
+        return self.label
+    
+class Priority(IntEnum): #members should be integer, from enum module
+    #Contrary to priority queue implementation, Python’s thread-safe queue orders elements with the lowest numeric priority value first
+    HIGH = 1
+    MEDIUM = 2
+    LOW = 3
+
+PRIORITIZED_PRODUCTS = (
+    Product(Priority.HIGH, ":1st_place_medal:"),
+    Product(Priority.MEDIUM, ":2nd_place_medal:"),
+    Product(Priority.LOW, ":3rd_place_medal:"),
+)
 
 # producer and consumer threads will share a wealth of attributes and behaviors, which will be both encapsulated in Worker class
 """worker class will extend the threading.Thread class and configures itself as a daemon thread so that its instances won’t prevent the program from exiting when the main 
@@ -140,6 +118,40 @@ class Worker(threading.Thread):
         for _ in range(100): #to progress to "100%" completeness
             sleep(delay / 100) #will make it appear as if it is loading
             self.progress += 1 #increment
+
+class Producer(Worker):
+    """producer thread will extend a Worker class and take an additional collection of products to choose from"""
+    def __init__(self, speed, buffer, products):
+        super().__init__(speed, buffer)
+        self.products = products
+
+    def run(self):
+        """a producer works in an infinite loop, choosing a random product and simulating some work before putting that product onto the queue, called a buffer. It then 
+         to sleep for a random period, and when it wakes up again, the process repeats"""
+        while True:
+            self.product = choice(self.products) #choice() method, from random module, returns a randomly selected element from the specified sequence
+            self.simulate_work()
+            self.buffer.put(self.product)
+            self.simulate_idle()
+
+class Consumer(Worker):
+    """similar structure with Producer class but more straight-forward """
+    def run(self):
+        while True:
+            #get() blocks by default, which will keep the consumer thread stopped and waiting until there’s at least one product in the queue. this way, a waiting consumer 
+            # won’t be wasting any CPU cycles while the operating system allocates valuable resources to other threads doing useful work
+            #to avoid a deadlock, you can optionally set a timeout on the .get() method by passing a timeout keyword argument with the number of seconds to wait before 
+            # giving up
+            #deadlock is a concurrency failure mode where a thread or threads wait for a condition that never occurs
+            self.product = self.buffer.get() #get() method returns the value of the item in a dict with the specified key
+            self.simulate_work()
+            self.buffer.task_done() #task_done() marks the task as done
+            self.simulate_idle()
+
+#You can increase the number of producers, their speed, or both to see how these changes affect the overall capacity of your system. Because the queue is unbounded, 
+# it’ll never slow down the producers. However, if you specified the queue’s maxsize parameter, then it would start blocking them until there was enough space in the 
+# queue again.
+
 
 """this class will render the current state of producers, consumers, and the queue ten times a second"""
 class View:
@@ -197,59 +209,48 @@ class View:
         ) #Align function also from rich module aligns renderable by adding space if necessary
         return Panel(align, height=5, title=title)
 
-class Producer(Worker):
-    """producer thread will extend a Worker class and take an additional collection of products to choose from"""
-    def __init__(self, speed, buffer, products):
-        super().__init__(speed, buffer)
-        self.products = products
+"""producers will always push their finished products through the queue to the consumers. Even though it may sometimes appear as if a consumer takes an element directly from 
+a producer, it’s only because things are happening too fast to notice the enqueue and dequeue operations"""
+def main(args):
+    """this function is the entry point which receives the parsed arguments (thru argparse module) supplied by parse_args()"""
+    """the number of producers and consumers is determined by the command-line arguments passed into your function. They’ll begin working and using the queue for interthread 
+    communication as soon as you start them."""
+    buffer = QUEUE_TYPES[args.queue]()
+    #when the user supplies the --queue heap option in the command line, the program will supply the right collection of products to the producer threads
+    products = PRIORITIZED_PRODUCTS if args.queue == "heap" else PRODUCTS
+    producers = [
+        Producer(args.producer_speed, buffer, products)
+        #for _ in range is used when there is no interest in values returned by a function--underscore in place of variable name. basically, there is no interest in how many 
+        # times the loop is run, just that it should run some specific number of times overall
+        for _ in range(args.producers)
+    ]
+    consumers = [
+        Consumer(args.consumer_speed, buffer) for _ in range(args.consumers)
+    ]
 
-    def run(self):
-        """a producer works in an infinite loop, choosing a random product and simulating some work before putting that product onto the queue, called a buffer. It then 
-         to sleep for a random period, and when it wakes up again, the process repeats"""
-        while True:
-            self.product = choice(self.products) #choice() method, from random module, returns a randomly selected element from the specified sequence
-            self.simulate_work()
-            self.buffer.put(self.product)
-            self.simulate_idle()
+    for producer in producers:
+        producer.start() #start() simply starts thread activity
 
-class Consumer(Worker):
-    """similar structure with Producer class but more straight-forward """
-    def run(self):
-        while True:
-            #get() blocks by default, which will keep the consumer thread stopped and waiting until there’s at least one product in the queue. this way, a waiting consumer 
-            # won’t be wasting any CPU cycles while the operating system allocates valuable resources to other threads doing useful work
-            #to avoid a deadlock, you can optionally set a timeout on the .get() method by passing a timeout keyword argument with the number of seconds to wait before 
-            # giving up
-            #deadlock is a concurrency failure mode where a thread or threads wait for a condition that never occurs
-            self.product = self.buffer.get() #get() method returns the value of the item in a dict with the specified key
-            self.simulate_work()
-            self.buffer.task_done() #task_done() marks the task as done
-            self.simulate_idle()
-
-#You can increase the number of producers, their speed, or both to see how these changes affect the overall capacity of your system. Because the queue is unbounded, 
-# it’ll never slow down the producers. However, if you specified the queue’s maxsize parameter, then it would start blocking them until there was enough space in the 
-# queue again.
-
-#PriorityQueue
-#dataclass() decorator examines the class to find field/s 
-#field is defined as a class variable that has a type annotation
-@dataclass(order=True)
-class Product:
-    priority: int
-    #In this case, the label is expected to be a string, but generally, it could be any object that might not be comparable at all
-    label: str = field(compare=False) #field() from dataclasses module, will return an object to identify its dataclass; making the label in this case not restrained to str
-
-    def __str__(self):
-        return self.label
+    for consumer in consumers:
+        consumer.start()
     
-class Priority(IntEnum): #members should be integer, from enum module
-    #Contrary to priority queue implementation, Python’s thread-safe queue orders elements with the lowest numeric priority value first
-    HIGH = 1
-    MEDIUM = 2
-    LOW = 3
+    view = View(buffer, producers, consumers) #view instance continually re-renders the screen to reflect the current state of your application
+    view.animate() 
 
-PRIORITIZED_PRODUCTS = (
-    Product(Priority.HIGH, ":1st_place_medal:"),
-    Product(Priority.MEDIUM, ":2nd_place_medal:"),
-    Product(Priority.LOW, ":3rd_place_medal:"),
-)
+
+def parse_args():
+    """this function supplies parsed arguments"""
+    parser = argparse.ArgumentParser() #argparse.ArgumentParser() is a container for argument specifications and has options that apply the parser as whole
+    parser.add_argument("-q", "--queue", choices=QUEUE_TYPES, default="fifo") #.add_argument method attaches individual argument specifications to the parser. It supports positional arguments, options that accept values, and on/off flags
+    parser.add_argument("-p", "--producers", type=int, default=3)
+    parser.add_argument("-c", "--consumers", type=int, default=2)
+    parser.add_argument("-ps", "--producer-speed", type=int, default=1)
+    parser.add_argument("-cs", "--consumer-speed", type=int, default=1)
+    return parser.parse_args()
+
+if __name__ == "__main__":
+    try:
+        main(parse_args())
+    except KeyboardInterrupt: #thrown when a user or programmer interrupts a program's usual execution
+        pass
+
