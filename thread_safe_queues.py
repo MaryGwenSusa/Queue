@@ -20,4 +20,11 @@ def parse_args():
     parser.add_argument("-c", "--consumers", type=int, default=2)
     parser.add_argument("-ps", "--producer-speed", type=int, default=1)
     parser.add_argument("-cs", "--consumer-speed", type=int, default=1)
+    return parser.parse_args()
+
+if __name__ == "__main__":
+    try:
+        main(parse_args())
+    except KeyboardInterrupt: #thrown when a user or programmer interrupts a program's usual execution
+        pass
     
