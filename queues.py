@@ -95,6 +95,9 @@ class MutableMinHeap(IterableMixin):
             self._elements_by_value[unique_value] = element
             heappush(self._elements, element)
 
+    def __getitem__(self, unique_value):
+        return self._elements_by_value[unique_value].priority
+
 messages = PriorityQueue() #called the class
 messages.enqueue_with_priority(IMPORTANT, "Windshield wipers turned on") #syntax to calling functions and adding value/argument to the parameter
 messages.enqueue_with_priority(NEUTRAL, "Radio station tuned in")
