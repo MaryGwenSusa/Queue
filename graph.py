@@ -29,7 +29,7 @@ class Queue(IterableMixin): #object constructor
         return self._elements.popleft()
         
 class Stack(Queue):
-    """this program is a simple structure of a LIFO queue hwerein you add naother element to the last index then gets the last element you add first"""
+    """this program is a simple structure of a LIFO queue wherein you add naother element to the last index then gets the last element you add first"""
     def dequeue(self):
         # this was for the FIFO -- return self._elements.popleft() #gets the first element from the left since this is portrayed in a horizontal manner but still preserves 
         # the general idea of a stack
