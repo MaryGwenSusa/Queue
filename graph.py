@@ -219,6 +219,8 @@ def dijkstra_shortest_path(graph, source, destination, weight_factory):
                 if new_distance < unvisited[neighbor]:
                     unvisited[neighbor] = new_distance
                     previous[neighbor] = node
+    
+    return retrace(previous, source, destination)
 
 #for city in depth_first_traverse(graph, nodes["edinburgh"]):
 #    print(city.name)
