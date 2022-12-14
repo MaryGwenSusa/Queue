@@ -1,7 +1,7 @@
 import argparse #makes it easy to write user-friendly command-line interfaces
 from queue import LifoQueue, PriorityQueue, Queue
 import threading
-from random import randint
+from random import choice, randint
 from time import sleep
 from itertools import zip_longest
 from rich.align import Align
@@ -112,7 +112,8 @@ class View:
                 live.update(self.render()) #.update() is useful if the information to display is too dynamic to generate by updating a single renderable
 
     def render(self):
-        #match case statement in Python is more powerful and allows for more complicated pattern matching
+        #notice the use of structural pattern matching to set the title and products based on the queue type; match case statement in Python is more powerful and allows for 
+        #more complicated pattern matching
         match self.buffer:
             case PriorityQueue():
                 title = "Priority Queue"
@@ -139,7 +140,7 @@ class View:
         return Group(*rows) #Group(), from rich module, takes a group of renderables (group of rows in this case) and returns a renderable object that renders the group
     
     def panel(self, worker, title):
-        """this method focuses on the alignment of the product and its 'progress'""""
+        """this method focuses on the alignment of the product and its 'progress'"""
         if worker is None:
             return ""
         padding = " " * int(29 / 100 * worker.progress)
@@ -148,3 +149,8 @@ class View:
         ) #Align function also from rich module aligns renderable by adding space if necessary
         return Panel(align, height=5, title=title)
 
+class Producer(Worker):
+    """producer thread will extend a Worker class and take an additional collection of products to choose from"""
+    def __init__(self, speed, buffer, products):
+        super().__init__(speed, buffer)
+        self.products = products
