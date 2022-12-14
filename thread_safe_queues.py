@@ -234,6 +234,13 @@ class Product:
         return self.label
     
 class Priority(IntEnum): #members should be integer, from enum module
+    #Contrary to priority queue implementation, Python’s thread-safe queue orders elements with the lowest numeric priority value first
     HIGH = 1
     MEDIUM = 2
     LOW = 3
+
+PRIORITIZED_PRODUCTS = (
+    Product(Priority.HIGH, ":1st_place_medal:"),
+    Product(Priority.MEDIUM, ":2nd_place_medal:"),
+    Product(Priority.LOW, ":3rd_place_medal:"),
+)
