@@ -116,7 +116,7 @@ class View:
         match self.buffer:
             case PriorityQueue():
                 title = "Priority Queue"
-                products = map(str, reversed(list(self.buffer.queue)))
+                products = map(str, reversed(list(self.buffer.queue))) #map () returns a map object
             case LifoQueue():
                 title = "Stack"
                 products = list(self.buffer.queue)
@@ -125,3 +125,16 @@ class View:
                 products = reversed(list(self.buffer.queue))
             case _: #equivalent to else in if-elif-else statement
                 title = products = ""
+        
+        rows = [
+            Panel(f"[bold]{title}:[/] {', '.join(products)}", width=82)
+        ] #Panel(), from rich module, is a console renderable that draws aborder around its contents
+        #zip_longest function (from iteratools module) falls under the category of Terminating Iterators. It prints the values of iterables alternatively in sequence. If one 
+        # of the iterables is printed fully, the remaining values are filled by the values assigned to fillvalue parameter.
+        pairs = zip_longest(self.producers, self.consumers) 
+        for i, (producer, consumer) in enumerate(pairs, 1):
+            left_panel = self.panel(producer, f"Producer {i}")
+            right_panel = self.panel(consumer, f"Consumer {i}")
+            rows.append(Columns([left_panel, right_panel], width=40)) #Columns(), from rich module, displays renderables in neat columns
+        return Group(*rows) #Group(), from rich module, takes a group of renderables (group of rows in this case) and returns a renderable object that renders the group
+
