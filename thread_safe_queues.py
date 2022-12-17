@@ -14,7 +14,7 @@ from enum import IntEnum
 
 """You provide either plain or prioritized products depending on a command-line argument using a conditional expression. 
  The rest of your code can remain agnostic to this change as long as the producers and consumers know how to deal with a new product type. Because this is only a simulation, 
- the worker threads don’t really do anything useful with the products, so you can run your script with the --queue heap flag and see the effect"""
+ the worker threads don’t really do anything useful with the products, so you can run your script with the --queue heap flag, --queue lifo and see the effect"""
 
 #FIRST SYNCHRONIZED QUEUE, UNBOUNDED FIFO QUEUE
 """You can increase the number of producers, their speed, or both to see how these changes affect the overall capacity of your system. Because the queue is unbounded, 
@@ -244,7 +244,7 @@ def parse_args():
     parser.add_argument("-q", "--queue", choices=QUEUE_TYPES, default="fifo") #.add_argument method attaches individual argument specifications to the parser. It supports positional arguments, options that accept values, and on/off flags
     parser.add_argument("-p", "--producers", type=int, default=3)
     parser.add_argument("-c", "--consumers", type=int, default=2)
-    parser.add_argument("-ps", "--producer-speed", type=int, default=1)
+    parser.add_argument("-ps", "--producer-speed", type=int, default=4)
     parser.add_argument("-cs", "--consumer-speed", type=int, default=1)
     return parser.parse_args()
 
