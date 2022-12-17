@@ -61,3 +61,10 @@ class Job(NamedTuple):
     #define a new data type representing a job to be put in the queue
     url: str
     depth: int = 1
+
+async def worker(worker_id, session, queue, links, max_depth):
+    print(f"[{worker_id} starting]", file=sys.stderr) #file parameter is used with print() function to write the value of given arguments to the specified file. 
+    #if it is not specified, by default the value is written to system. stdout. it can be used to create log the values i.e. to keep the track to the statements, 
+    # logics, etc.
+    #the stderr stream is line-buffered in both cases
+    #line buffering - characters are transmitted to the system as a block when a new-line character is encountered
