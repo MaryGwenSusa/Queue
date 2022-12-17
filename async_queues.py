@@ -21,4 +21,10 @@ def parse_args():
     parser.add_argument("url")
     parser.add_argument("-d", "--max-depth", type=int, default=2)
     parser.add_argument("-w", "--num-workers", type=int, default=3)
-    return parser.parse_args()
+    return parser.parse_args() #parse_args will take the arguments you provide on the command line when you run your program and interpret them according to the 
+    #arguments you have added to your ArgumentParser object
+
+def display(links):
+    """this coroutine displays the list of links sorted by the number of visits in descending order"""
+    for url, count in links.most_common():
+        print(f"{count:>3} {url}")
