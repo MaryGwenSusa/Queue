@@ -1,7 +1,8 @@
 import argparse
 import asyncio
 from collections import Counter
-
+from urllib.parse import urljoin
+from bs4 import BeautifulSoup
 import aiohttp
 
 async def main(args): #the syntax async def introduces either a native coroutine or an asynchronous generator. the expressions async with and async for are also valid
@@ -13,7 +14,7 @@ async def main(args): #the syntax async def introduces either a native coroutine
     finally: #finally block always gets executed either exception is generated or not
         await session.close() 
         #await passes function control back to the event loop (it suspends the execution of the surrounding coroutine)
-        #Tclose() method closes an open file. files should always be closed, in some cases, due to buffering, changes made to a file may not show until you
+        #close() method closes an open file. files should always be closed, in some cases, due to buffering, changes made to a file may not show until you
         #close the file
 
 def parse_args():
@@ -32,3 +33,15 @@ def display(links):
 if __name__ == "__main__":
     #executes main() coroutine on the default event loop
     asyncio.run(main(parse_args())) #the asyncio.run() function to run the top-level entry point “main()” function
+
+"""only returns the received content as long as it’s HTML, which you can tell by looking at the Content-Type HTTP header"""
+async def fetch_html(session, url):
+    """when extracting links from the HTML content, this skips inline JavaScript in the href attribute"""
+    async with session.get(url) as response: #get() method returns the value for the given key if present in the dictionary. if not, then it will return None 
+        #(if get() is used with only one argument)
+        #the Response interface of the Fetch API represents the response to a request
+        if response.ok and response.content_type == "text/html":
+            #the ok read-only property of the Response interface contains a Boolean stating whether the response was successful 
+            #the Content-Type representation header is used to indicate the original media type of the resource (prior to any content encoding applied for sending)
+            return await response.text() #text() method of the Response interface takes a Response stream and reads it to completion. it returns a promise 
+            #that resolves with a String. the response is always decoded using UTF-8.
