@@ -4,6 +4,8 @@ from collections import Counter
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 import aiohttp
+import sys
+from typing import NamedTuple
 
 async def main(args): #the syntax async def introduces either a native coroutine or an asynchronous generator. the expressions async with and async for are also valid
     session = aiohttp.ClientSession() #client session is the recommended interface for making HTTP requests. session encapsulates a connection pool (connector 
@@ -54,3 +56,8 @@ def parse_links(url, html):
         href = anchor.get("href").lower()
         if not href.startswith("javascript:"): #skips inline JavaScript in the href attribute
             yield urljoin(url, href) #optionally join a relative path with the current URL to form an absolute interpretation of the latter
+
+class Job(NamedTuple):
+    #define a new data type representing a job to be put in the queue
+    url: str
+    depth: int = 1
