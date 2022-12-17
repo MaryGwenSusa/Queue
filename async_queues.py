@@ -28,3 +28,7 @@ def display(links):
     """this coroutine displays the list of links sorted by the number of visits in descending order"""
     for url, count in links.most_common():
         print(f"{count:>3} {url}")
+
+if __name__ == "__main__":
+    #executes main() coroutine on the default event loop
+    asyncio.run(main(parse_args())) #the asyncio.run() function to run the top-level entry point “main()” function
