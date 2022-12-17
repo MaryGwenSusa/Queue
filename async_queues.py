@@ -36,7 +36,7 @@ if __name__ == "__main__":
 
 """only returns the received content as long as it’s HTML, which you can tell by looking at the Content-Type HTTP header"""
 async def fetch_html(session, url):
-    """when extracting links from the HTML content, this skips inline JavaScript in the href attribute"""
+    """extracts links from the HTML content"""
     async with session.get(url) as response: #get() method returns the value for the given key if present in the dictionary. if not, then it will return None 
         #(if get() is used with only one argument)
         #the Response interface of the Fetch API represents the response to a request
@@ -45,3 +45,12 @@ async def fetch_html(session, url):
             #the Content-Type representation header is used to indicate the original media type of the resource (prior to any content encoding applied for sending)
             return await response.text() #text() method of the Response interface takes a Response stream and reads it to completion. it returns a promise 
             #that resolves with a String. the response is always decoded using UTF-8.
+
+def parse_links(url, html):
+    """parses HTML links"""
+    soup = BeautifulSoup(html, features="html.parser") #BeautifulSoup object represents the document as a nested data structure
+    for anchor in soup.select("a[href]"): #.select(rlist, wlist, xlist[, timeout]): the first three arguments are iterables of ‘waitable objects’: either integers 
+    #representing file descriptors or objects with a parameterless method named fileno() returning such an integer. rlist: wait until ready for reading
+        href = anchor.get("href").lower()
+        if not href.startswith("javascript:"): #skips inline JavaScript in the href attribute
+            yield urljoin(url, href) #optionally join a relative path with the current URL to form an absolute interpretation of the latter
